@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multi-Room Hidden-Camera Detection Protocol</title>
+  <meta name="description" content="A clear static protocol site for a multi-room hidden-camera detection user study.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <nav class="top-nav" aria-label="Primary navigation">
+      <a class="brand" href="#overview">Multi-Room Detection Protocol</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+        Menu
+      </button>
+      <div class="nav-links" id="nav-menu">
+        <a href="#overview">Overview</a>
+        <a href="#methods">Methods</a>
+        <a href="#scheduling">Scheduling</a>
+        <a href="#logs">Logs</a>
+        <a href="#privacy">Privacy</a>
+        <a href="participant-instructions.md">Participant Guide</a>
+        <a href="protocol-checklist.md">Checklist</a>
+        <a href="researcher-notes.md">Researcher Notes</a>
+        <a href="action-signal-spec.md">Signal Spec</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="overview">
+      <div class="hero-content">
+        <p class="eyebrow">Research and participant protocol</p>
+        <h1>Multi-Room Hidden-Camera Detection Protocol</h1>
+        <p class="lead">
+          This protocol guides a user through detecting motion-activated Wi-Fi monitoring devices in a house or multi-room apartment.
+          It coordinates room actions with Wi-Fi traffic capture so researchers can look for devices whose network activity repeatedly responds to room activity.
+        </p>
+        <div class="hero-actions" aria-label="Related documents">
+          <a class="button" href="protocol-checklist.md">Researcher Checklist</a>
+          <a class="button secondary" href="participant-instructions.md">Participant Instructions</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="page-grid">
+      <aside class="toc" aria-labelledby="toc-title">
+        <h2 id="toc-title">Table of Contents</h2>
+        <ol>
+          <li><a href="#overview-text">Overview</a></li>
+          <li><a href="#roles">Roles</a></li>
+          <li><a href="#action-signal">One Action Signal Per Room</a></li>
+          <li><a href="#methods">Detection Methods</a></li>
+          <li><a href="#setup">QR/NFC Setup</a></li>
+          <li><a href="#detection-phases">Detection Phases</a></li>
+          <li><a href="#validation">Error Handling</a></li>
+          <li><a href="#scheduling">Scheduling</a></li>
+          <li><a href="#disambiguation">Disambiguation</a></li>
+          <li><a href="#logs">Data to Log</a></li>
+          <li><a href="#metrics">Metrics</a></li>
+          <li><a href="#participants">Participant Instructions</a></li>
+          <li><a href="#privacy">Privacy and Ethics</a></li>
+          <li><a href="#documents">Protocol Documents</a></li>
+        </ol>
+      </aside>
+
+      <div class="content">
+        <section id="overview-text" class="section">
+          <h2>Overview</h2>
+          <p>
+            The app instructs the user to enter, walk inside, and exit rooms at scheduled times while a Wi-Fi sniffer records surrounding traffic.
+            For each room, the app records a binary action signal that marks when the user is actively testing that room.
+          </p>
+          <p>
+            After the run, researchers compare the room action signals with device network traffic.
+            A device is a candidate if its traffic repeatedly changes during the same room actions and stays quiet during idle periods.
+            This protocol does not prove that a device is a camera, and it should not be presented as a safety guarantee.
+          </p>
+          <div class="callout privacy">
+            <h3>Privacy caution</h3>
+            <p>Use this protocol only for controlled studies or user-guided privacy checks. Do not publish sensitive layouts, identities, addresses, or device identifiers.</p>
+          </div>
+        </section>
+
+        <section id="roles" class="section">
+          <h2>Roles</h2>
+          <div class="two-column">
+            <article class="card">
+              <h3>Researcher/operator</h3>
+              <p>Sets up the study, configures rooms, places QR codes or NFC tags if used, starts network capture, reviews logs, and handles consent and privacy.</p>
+            </article>
+            <article class="card">
+              <h3>User/participant</h3>
+              <p>Follows app instructions, performs natural room actions, scans, taps, or presses buttons as instructed, and reports mistakes when something goes wrong.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="action-signal" class="section">
+          <h2>Key Idea: One Action Signal Per Room</h2>
+          <p>
+            For a home with <strong>N</strong> rooms, the app records <strong>N</strong> action signals:
+          </p>
+          <pre class="formula"><code>A(t) = [a_1(t), a_2(t), ..., a_N(t)]</code></pre>
+          <p>For each room <strong>R_i</strong>:</p>
+          <ul>
+            <li><code>a_i(t) = 1</code> when the user is performing the detection action in room <strong>R_i</strong>.</li>
+            <li><code>a_i(t) = 0</code> otherwise.</li>
+          </ul>
+          <p>
+            During normal operation, at most one room signal should be <code>1</code> at a time.
+            During idle periods, all room signals are <code>0</code>.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <caption>Example action-signal table</caption>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Bedroom</th>
+                  <th>Kitchen</th>
+                  <th>Living Room</th>
+                  <th>Office</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>00:00</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>00:10</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>00:24</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>01:00</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                <tr><td>01:16</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="methods" class="section">
+          <h2>Detection Methods Compared</h2>
+          <p>
+            The three conditions differ only in how the app records the room action interval.
+            The detection algorithm, room order, action schedule, and sniffer setup should stay constant across methods.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <caption>Comparison of action-signal recording methods</caption>
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Setup assumption</th>
+                  <th>Participant action</th>
+                  <th>Recorded interval</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>A. AR + click button</th>
+                  <td>The app assumes a room map is already available on the phone. It knows room boundaries or room labels.</td>
+                  <td>The user taps <strong>Start Action</strong>, enters the instructed room, walks naturally, exits, and taps <strong>Action Finished</strong>.</td>
+                  <td>The target room is active between the two button events. AR tracking can help verify movement and room entry or exit, but the core interval is based on user interaction and app state.</td>
+                </tr>
+                <tr>
+                  <th>B. QR code</th>
+                  <td>The app does not assume a room map. The QR code IDs are already known to the app, and the room-to-code mapping is created during setup.</td>
+                  <td>The user matches each room with a QR code, then scans that room's code before entering and scans the same code again after exiting.</td>
+                  <td>The mapped room is active between the two scans.</td>
+                </tr>
+                <tr>
+                  <th>C. NFC tag</th>
+                  <td>The app does not assume a room map. The NFC tag IDs are already known to the app, and the room-to-tag mapping is created during setup.</td>
+                  <td>The user matches each room with an NFC tag, then taps that room's tag before entering and taps the same tag again after exiting.</td>
+                  <td>The mapped room is active between the two taps.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="setup" class="section">
+          <h2>QR/NFC Setup Phase</h2>
+          <p>
+            QR and NFC conditions do not need a geometric room map. They only need a mapping:
+          </p>
+          <pre class="formula"><code>room name &lt;-&gt; tag ID</code></pre>
+          <ol class="steps">
+            <li>User enters the number of rooms to scan.</li>
+            <li>For each room, the app asks the user to go to the room entrance.</li>
+            <li>User scans a QR code or taps an NFC tag.</li>
+            <li>User enters a room name or selects a room type.</li>
+            <li>App stores the mapping.</li>
+            <li>App shows a verification table.</li>
+            <li>Detection starts only after the user confirms all mappings.</li>
+          </ol>
+          <div class="table-wrap">
+            <table>
+              <caption>Mapping verification table</caption>
+              <thead>
+                <tr>
+                  <th>Room</th>
+                  <th>QR/NFC ID</th>
+                  <th>User label</th>
+                  <th>Confirmed?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>R1</td><td>tag_001</td><td>Bedroom</td><td>Yes</td></tr>
+                <tr><td>R2</td><td>tag_002</td><td>Kitchen</td><td>Yes</td></tr>
+                <tr><td>R3</td><td>tag_003</td><td>Living Room</td><td>Yes</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="detection-phases" class="section">
+          <h2>Detection Phases</h2>
+          <div class="three-column">
+            <article class="card participant">
+              <h3>QR/NFC detection</h3>
+              <ol>
+                <li>The app tells the user which room to test.</li>
+                <li>User stands outside that room.</li>
+                <li>User scans or taps that room's QR/NFC tag before entering.</li>
+                <li>User enters, walks naturally, and exits.</li>
+                <li>User scans or taps the same tag again after exiting.</li>
+                <li>The app records the interval between the two scans or taps as <code>action=1</code> for that room.</li>
+                <li>All other room action signals remain <code>0</code>.</li>
+              </ol>
+            </article>
+            <article class="card participant">
+              <h3>AR + button detection</h3>
+              <ol>
+                <li>The app already has the room map.</li>
+                <li>The app tells the user which room to test.</li>
+                <li>User stands outside the target room.</li>
+                <li>User taps <strong>Start Action</strong>.</li>
+                <li>User enters, walks naturally, and exits.</li>
+                <li>User taps <strong>Action Finished</strong> after exiting.</li>
+                <li>The app records that interval as <code>action=1</code> for the target room.</li>
+                <li>All other room action signals remain <code>0</code>.</li>
+              </ol>
+            </article>
+            <article class="card note">
+              <h3>Researcher note</h3>
+              <p>
+                Keep prompts short during the run. If the participant makes a mistake, log it, restart that action step, and preserve the original event record for analysis.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section id="validation" class="section">
+          <h2>Error Handling and Validation</h2>
+          <ul class="check-list">
+            <li>Only one room action can be active at a time.</li>
+            <li>For QR/NFC, the same tag must start and end the action.</li>
+            <li>If the app asks for Bedroom but the user scans Kitchen, the app should show an error.</li>
+            <li>If an action is active for Bedroom and the user scans a different room, the app should reject it or ask the user to report a mistake.</li>
+            <li>Add a <strong>Report Mistake</strong> button.</li>
+            <li>Mistakes include wrong room, wrong scan or tap, forgotten scan or tap, failed scan, failed NFC tap, entering too early, or exiting late.</li>
+            <li>The app should log mistakes and restart that action step.</li>
+          </ul>
+        </section>
+
+        <section id="scheduling" class="section">
+          <h2>Multi-Room Scheduling</h2>
+          <div class="two-column">
+            <article class="card">
+              <h3>Sequential mode</h3>
+              <ul>
+                <li>Test one room at a time.</li>
+                <li>Keep the room idle for the reset or cooldown period.</li>
+                <li>Perform four room actions separated by idle intervals.</li>
+                <li>Run detection.</li>
+                <li>Move to the next room.</li>
+                <li>This is slower but cleaner.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Interleaved mode</h3>
+              <ul>
+                <li>Use idle time for one room to test another room.</li>
+                <li>Never schedule overlapping actions.</li>
+                <li>Never enter a room during its required idle period.</li>
+                <li>Keep at least a short separation between actions in different rooms.</li>
+                <li>Avoid identical periodic schedules across rooms.</li>
+                <li>This is faster but requires careful logging.</li>
+              </ul>
+            </article>
+          </div>
+          <div class="callout note">
+            <h3>Room state machine</h3>
+            <p><code>Room state ∈ {SETUP, RESETTING, READY_FOR_ACTION, ACTION_ACTIVE, WAITING_IDLE, CLASSIFIED, NEEDS_DISAMBIGUATION}</code></p>
+          </div>
+        </section>
+
+        <section id="disambiguation" class="section">
+          <h2>Disambiguation</h2>
+          <p>
+            A device may correlate with multiple rooms if it sees a hallway, doorway, or more than one room.
+            Use extra actions to separate room-specific signals from shared-view signals.
+          </p>
+          <ol class="steps">
+            <li>Select candidate rooms one at a time.</li>
+            <li>Keep other candidate rooms idle.</li>
+            <li>Perform extra actions in only one room.</li>
+            <li>Check whether the same device responds.</li>
+            <li>Label the result as room-specific monitoring device, shared-view or hallway monitoring device, or unresolved candidate.</li>
+          </ol>
+        </section>
+
+        <section id="logs" class="section">
+          <h2>Data to Log</h2>
+          <p>Use random participant and home identifiers. Keep consent records separate from technical logs.</p>
+          <div class="table-wrap">
+            <table>
+              <caption>Recommended logging fields</caption>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Fields</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>General run metadata</th>
+                  <td><code>participant_id_random</code>, <code>home_id_random</code>, <code>run_id</code>, method condition: AR / QR / NFC, <code>room_id</code>, timestamp, app version, sniffer type, channel mode, trial number</td>
+                </tr>
+                <tr>
+                  <th>Action events</th>
+                  <td><code>event_type</code>, <code>action_start_time</code>, <code>action_end_time</code>, <code>room_id</code>, action duration, idle duration before action, method success, retry count, error reported</td>
+                </tr>
+                <tr>
+                  <th>QR/NFC events</th>
+                  <td><code>tag_id</code>, <code>room_id</code>, scan/tap timestamp, expected room, scanned/tapped room, success/failure, retry count</td>
+                </tr>
+                <tr>
+                  <th>AR events</th>
+                  <td>Tracking state, position trace if available, button timestamps, room entry estimate if available, room exit estimate if available, tracking lost events</td>
+                </tr>
+                <tr>
+                  <th>Network events</th>
+                  <td>Capture start time, capture end time, pseudonymized MAC, packet timestamp, packet size, frame type if available, RSSI if available, channel if available</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="metrics" class="section">
+          <h2>Metrics</h2>
+          <div class="two-column">
+            <article class="card">
+              <h3>Detection metrics</h3>
+              <ul>
+                <li>Room-level true positive, false positive, and false negative</li>
+                <li>Device-level true positive, false positive, and false negative</li>
+                <li>Time to decision</li>
+                <li>Number of actions required</li>
+                <li>Unresolved cases</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Action-signal quality</h3>
+              <ul>
+                <li>Missing action events</li>
+                <li>Extra action events</li>
+                <li>Start-time error</li>
+                <li>End-time error</li>
+                <li>Room-label error</li>
+                <li>Timestamp alignment error</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Usability</h3>
+              <ul>
+                <li>Setup time and completion time</li>
+                <li>Number of mistakes</li>
+                <li>Number of scan/tap failures</li>
+                <li>Number of times help was needed</li>
+                <li>Perceived ease and confidence</li>
+                <li>Preferred method</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Practical deployment</h3>
+              <ul>
+                <li>Setup burden and room mapping burden</li>
+                <li>Lighting dependence for QR</li>
+                <li>Phone-positioning burden for NFC</li>
+                <li>AR drift or tracking loss</li>
+                <li>Hallway/shared-view ambiguity</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="participants" class="section">
+          <h2>Participant Instructions</h2>
+          <div class="three-column">
+            <article class="card participant">
+              <h3>AR condition</h3>
+              <ol>
+                <li>Stand outside the room shown in the app.</li>
+                <li>Tap <strong>Start Action</strong>.</li>
+                <li>Enter the room naturally.</li>
+                <li>Walk along the instructed path.</li>
+                <li>Exit the room.</li>
+                <li>Tap <strong>Action Finished</strong>.</li>
+                <li>Wait for the next prompt.</li>
+              </ol>
+            </article>
+            <article class="card participant">
+              <h3>QR condition</h3>
+              <ol>
+                <li>During setup, match each room to one QR code.</li>
+                <li>During detection, scan the room QR code before entering.</li>
+                <li>Enter, walk naturally, and exit.</li>
+                <li>Scan the same QR code again after exiting.</li>
+                <li>Wait for the next prompt.</li>
+              </ol>
+            </article>
+            <article class="card participant">
+              <h3>NFC condition</h3>
+              <ol>
+                <li>During setup, match each room to one NFC tag.</li>
+                <li>During detection, tap the room NFC tag before entering.</li>
+                <li>Enter, walk naturally, and exit.</li>
+                <li>Tap the same NFC tag again after exiting.</li>
+                <li>Wait for the next prompt.</li>
+              </ol>
+            </article>
+          </div>
+        </section>
+
+        <section id="privacy" class="section">
+          <h2>Privacy and Ethics</h2>
+          <div class="callout privacy">
+            <h3>Privacy caution</h3>
+            <ul>
+              <li>This protocol is for controlled research studies and user-guided privacy checks.</li>
+              <li>Obtain consent and institutional approval when running human-subject studies.</li>
+              <li>Do not collect audio or video unless separately justified and consented.</li>
+              <li>Do not decrypt bystander traffic.</li>
+              <li>Pseudonymize MAC addresses.</li>
+              <li>Do not store exact home addresses in the public dataset.</li>
+              <li>Separate consent forms from technical logs.</li>
+              <li>Participants may stop at any time.</li>
+              <li>Do not publish sensitive layouts, identities, or device identifiers.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="documents" class="section">
+          <h2>Protocol Documents</h2>
+          <div class="document-grid">
+            <a class="doc-link" href="protocol-checklist.md">
+              <strong>Researcher Checklist</strong>
+              <span>Before, during, and after study tasks.</span>
+            </a>
+            <a class="doc-link" href="participant-instructions.md">
+              <strong>Participant Instructions</strong>
+              <span>Short participant-facing steps for AR, QR, and NFC.</span>
+            </a>
+            <a class="doc-link" href="researcher-notes.md">
+              <strong>Researcher Notes</strong>
+              <span>Pilot design, counterbalancing, and method comparison guidance.</span>
+            </a>
+            <a class="doc-link" href="action-signal-spec.md">
+              <strong>Action Signal Specification</strong>
+              <span>Formal signal definitions, schema, examples, and validation rules.</span>
+            </a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Static protocol site for research planning and participant guidance. No sensitive identifiers are included.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
