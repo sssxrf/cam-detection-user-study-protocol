@@ -13,6 +13,8 @@
   --privacy-border: #9b86d8;
   --participant: #edf8f1;
   --participant-border: #76b58a;
+  --important: #fff1ed;
+  --important-border: #d96b4b;
   --shadow: 0 12px 34px rgba(24, 39, 54, 0.09);
 }
 
@@ -303,6 +305,15 @@ p {
   border-color: var(--privacy-border);
 }
 
+.important {
+  background: var(--important);
+  border-color: var(--important-border);
+}
+
+.how-it-works {
+  margin-top: 1rem;
+}
+
 .formula {
   background: #14202b;
   border-radius: 8px;
@@ -392,6 +403,61 @@ tbody th {
   box-shadow: 0 0 0 3px rgba(27, 106, 119, 0.12);
 }
 
+.article-page {
+  margin: 0 auto;
+  max-width: 980px;
+  padding: 0 1rem 4rem;
+}
+
+.article-hero {
+  padding: 3.8rem 0 2rem;
+}
+
+.article-hero h1 {
+  max-width: 780px;
+}
+
+.article-content {
+  min-width: 0;
+}
+
+.article-content .section {
+  box-shadow: var(--shadow);
+}
+
+.large-callout {
+  padding: 1.25rem;
+}
+
+.large-callout h2 {
+  margin-bottom: 0.75rem;
+}
+
+.task-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.task-list li {
+  align-items: flex-start;
+  display: flex;
+  gap: 0.65rem;
+}
+
+.task-list li::before {
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  content: "";
+  flex: 0 0 1rem;
+  height: 1rem;
+  margin-top: 0.22rem;
+  width: 1rem;
+}
+
+.task-list li + li {
+  margin-top: 0.65rem;
+}
+
 .site-footer {
   border-top: 1px solid var(--line);
   color: var(--muted);
@@ -454,6 +520,10 @@ tbody th {
 
   .hero-content {
     padding: 3rem 1rem 2.4rem;
+  }
+
+  .article-hero {
+    padding: 2.6rem 0 1.5rem;
   }
 
   .section {

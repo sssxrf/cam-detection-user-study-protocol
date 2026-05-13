@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User Flow Checklist | Multi-Room Hidden-Camera Detection Protocol</title>
+  <meta name="description" content="Participant checklist for following the multi-room hidden-camera detection app workflow.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <nav class="top-nav" aria-label="Primary navigation">
+      <a class="brand" href="index.html#overview">Multi-Room Detection Protocol</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+      <div class="nav-links" id="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="participant-instructions.html">Participant Instructions</a>
+        <a href="user-flow-checklist.html">Checklist</a>
+        <a href="app-recording-spec.html">App Recording</a>
+        <a href="action-signal-spec.html">Action Signals</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="article-page">
+    <div class="article-hero">
+      <p class="eyebrow">Participant checklist</p>
+      <h1>User Flow Checklist</h1>
+      <p class="lead">Use this checklist to follow the app workflow from setup to the end of the session.</p>
+      <div class="hero-actions">
+        <a class="button" href="participant-instructions.html">Read Instructions</a>
+        <a class="button secondary" href="index.html">Back Home</a>
+      </div>
+    </div>
+
+    <article class="article-content">
+      <section class="section">
+        <h2>Choose Method</h2>
+        <ul class="task-list">
+          <li>Open the study app.</li>
+          <li>Choose AR + Button, QR Code, or NFC Tag.</li>
+          <li>Read the short instructions shown by the app.</li>
+          <li>Confirm that the connected sniffer is ready if the app displays a sniffer status check.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Room Setup</h2>
+        <div class="three-column">
+          <div class="card">
+            <h3>AR + Button</h3>
+            <ul class="task-list">
+              <li>Confirm the room map or room list shown by the app.</li>
+              <li>Confirm the starting location if the app asks.</li>
+              <li>Continue to Start Detection.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>QR Code</h3>
+            <ul class="task-list">
+              <li>Enter the number of rooms.</li>
+              <li>Place or select one QR code near each room entrance.</li>
+              <li>Scan each QR code.</li>
+              <li>Name each room.</li>
+              <li>Confirm each room-to-code mapping.</li>
+              <li>Review the final room table.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>NFC Tag</h3>
+            <ul class="task-list">
+              <li>Enter the number of rooms.</li>
+              <li>Place or select one NFC tag near each room entrance.</li>
+              <li>Tap each NFC tag.</li>
+              <li>Name each room.</li>
+              <li>Confirm each room-to-tag mapping.</li>
+              <li>Review the final room table.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Start Detection</h2>
+        <ul class="task-list">
+          <li>Tap Start Detection only after room setup is complete.</li>
+          <li>Confirm that the app starts the guided session.</li>
+          <li>Confirm that the app starts network capture through the connected sniffer.</li>
+          <li>Do not operate the sniffer separately.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>For Each Room Action</h2>
+        <ul class="task-list">
+          <li>Read the room name shown by the app.</li>
+          <li>Stand outside the target room.</li>
+          <li>Mark the start of the action: AR: tap Start Action. QR: scan the room QR code. NFC: tap the room NFC tag.</li>
+          <li>Enter the room normally.</li>
+          <li>Walk naturally along the instructed path.</li>
+          <li>Exit the room.</li>
+          <li>Mark the end of the action: AR: tap Action Finished. QR: scan the same QR code again. NFC: tap the same NFC tag again.</li>
+          <li>Wait for the next app prompt.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Mistake Checklist</h2>
+        <ul class="task-list">
+          <li>If I used the wrong room, tap Report Mistake.</li>
+          <li>If I used the wrong tag, tap Report Mistake.</li>
+          <li>If I forgot a scan, tap, or button press, tap Report Mistake.</li>
+          <li>If QR/NFC/AR fails, tap Report Mistake.</li>
+          <li>Wait for the app to restart the affected step.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Finish Session</h2>
+        <ul class="task-list">
+          <li>Follow the app's final prompt.</li>
+          <li>Let the app stop the guided session.</li>
+          <li>Let the app stop network capture automatically.</li>
+          <li>Do not manually edit the recorded data.</li>
+        </ul>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>Static user-study protocol site. No sensitive identifiers are included.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

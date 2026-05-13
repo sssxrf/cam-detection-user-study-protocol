@@ -38,15 +38,14 @@
         <p class="eyebrow">User-study app workflow</p>
         <h1>Multi-Room Hidden-Camera Detection Protocol</h1>
         <p class="lead">
-          This site describes the user-facing protocol for a multi-room hidden-camera detection study.
-          The user follows instructions from a mobile app while the app records room-level action signals and Wi-Fi metadata from a connected sniffer.
-          For the AR + button method, the app assumes a room map is available on the phone.
-          For the QR-code and NFC-tag methods, no room map is required; instead, the user first matches each room to a QR code or NFC tag.
-          When the user taps Start Detection, the app starts the detection session and begins network capture through the connected sniffer.
+          Use the study app to check multiple rooms with one of three methods: AR + Button, QR Code, or NFC Tag.
+          The app records room-level action signals and Wi-Fi metadata from a connected sniffer.
+          QR and NFC do not require a room map; the user maps each room to a tag during setup.
+          Start Detection begins both the guided session and network capture.
         </p>
         <div class="hero-actions" aria-label="Related pages">
-          <a class="button" href="participant-instructions.md">Participant Instructions</a>
-          <a class="button secondary" href="user-flow-checklist.md">User Flow Checklist</a>
+          <a class="button" href="participant-instructions.html">Participant Instructions</a>
+          <a class="button secondary" href="user-flow-checklist.html">User Flow Checklist</a>
         </div>
       </div>
     </section>
@@ -81,11 +80,25 @@
           </p>
           <p>
             The goal is to study whether motion-activated Wi-Fi monitoring devices show traffic changes that repeatedly line up with room activity.
-            The protocol does not prove that a device is a camera, and it should not be treated as a safety guarantee.
+            The protocol does not prove that a device is a camera and should not be treated as a safety guarantee.
           </p>
           <div class="callout participant">
             <h3>Participant instruction</h3>
             <p>The user should follow the app prompts, move naturally, and press <strong>Report Mistake</strong> if a scan, tap, room entry, or button press goes wrong.</p>
+          </div>
+          <div class="three-column how-it-works" aria-label="How it works">
+            <article class="card">
+              <h3>1. Set up rooms</h3>
+              <p>Confirm the AR room map, or map each QR/NFC tag to a room entrance.</p>
+            </article>
+            <article class="card">
+              <h3>2. Tap Start Detection</h3>
+              <p>The app starts the session timer and starts network capture through the connected sniffer.</p>
+            </article>
+            <article class="card">
+              <h3>3. Follow room prompts</h3>
+              <p>Enter, walk, exit, and mark each action exactly when the app asks.</p>
+            </article>
           </div>
         </section>
 
@@ -146,11 +159,11 @@
             </article>
             <article class="card">
               <h3>QR code</h3>
-              <p>No geometric room map is required. The user places or selects one QR code at each room entrance, scans it, names the room, and confirms the mapping.</p>
+              <p>No geometric room map is required. The app already knows valid QR-code IDs. The user places or selects one QR code at each room entrance and maps it to the room.</p>
             </article>
             <article class="card">
               <h3>NFC tag</h3>
-              <p>No geometric room map is required. The user places or selects one NFC tag at each room entrance, taps it, names the room, and confirms the mapping.</p>
+              <p>No geometric room map is required. The app already knows valid NFC-tag IDs. The user places or selects one NFC tag at each room entrance and maps it to the room.</p>
             </article>
           </div>
           <div class="table-wrap">
@@ -257,15 +270,15 @@
           <div class="callout participant">
             <h3>Participant instruction</h3>
             <ol>
-              <li>Confirm the room list and starting location shown by the app.</li>
-              <li>Tap <strong>Start Detection</strong>.</li>
-              <li>Stand outside the room shown in the app.</li>
+              <li>Confirm the room list or map shown by the app.</li>
+              <li>Stand outside the room shown on the screen.</li>
+              <li>Wait for the app prompt.</li>
               <li>Tap <strong>Start Action</strong>.</li>
-              <li>Enter the room naturally.</li>
-              <li>Walk along the instructed path.</li>
+              <li>Enter the room normally.</li>
+              <li>Walk naturally along the instructed path.</li>
               <li>Exit the room.</li>
-              <li>Tap <strong>Action Finished</strong>.</li>
-              <li>Wait for the next prompt.</li>
+              <li>Tap <strong>Action Finished</strong> after you are outside.</li>
+              <li>Wait outside until the app gives the next prompt.</li>
             </ol>
           </div>
           <p>
@@ -276,6 +289,17 @@
 
         <section id="qr-code" class="section">
           <h2>QR Code Instructions</h2>
+          <h3>Setup</h3>
+          <ol class="steps">
+            <li>Enter the number of rooms.</li>
+            <li>Place or select one QR code near each room entrance.</li>
+            <li>Scan the QR code.</li>
+            <li>Name the room, such as Bedroom, Kitchen, Living Room, Office, or Bathroom.</li>
+            <li>Confirm the room-to-code mapping.</li>
+            <li>Repeat for every room.</li>
+            <li>Review the room table before starting.</li>
+          </ol>
+          <h3>During detection</h3>
           <p>
             When the app asks the user to test a room, the user scans that room's tag before entering.
             This marks the start of the action interval for that room.
@@ -285,12 +309,11 @@
             All other room action signals remain <code>0</code>.
           </p>
           <ol class="steps">
-            <li>During setup, place or select one QR code near each room entrance.</li>
-            <li>Scan the QR code, name the room, and confirm the mapping.</li>
-            <li>Tap <strong>Start Detection</strong> after all rooms are confirmed.</li>
-            <li>When prompted, stand outside the target room.</li>
-            <li>Scan the assigned QR code before entering.</li>
-            <li>Enter, walk naturally, and exit.</li>
+            <li>When the app names a room, stand outside that room.</li>
+            <li>Scan that room's QR code before entering.</li>
+            <li>Enter the room normally.</li>
+            <li>Walk naturally along the instructed path.</li>
+            <li>Exit the room.</li>
             <li>Scan the same QR code again after exiting.</li>
             <li>Wait for the next prompt.</li>
           </ol>
@@ -298,6 +321,17 @@
 
         <section id="nfc-tag" class="section">
           <h2>NFC Tag Instructions</h2>
+          <h3>Setup</h3>
+          <ol class="steps">
+            <li>Enter the number of rooms.</li>
+            <li>Place or select one NFC tag near each room entrance.</li>
+            <li>Tap the NFC tag with the phone.</li>
+            <li>Name the room.</li>
+            <li>Confirm the room-to-tag mapping.</li>
+            <li>Repeat for every room.</li>
+            <li>Review the room table before starting.</li>
+          </ol>
+          <h3>During detection</h3>
           <p>
             When the app asks the user to test a room, the user taps that room's tag before entering.
             This marks the start of the action interval for that room.
@@ -307,12 +341,11 @@
             All other room action signals remain <code>0</code>.
           </p>
           <ol class="steps">
-            <li>During setup, place or select one NFC tag near each room entrance.</li>
-            <li>Tap the NFC tag, name the room, and confirm the mapping.</li>
-            <li>Tap <strong>Start Detection</strong> after all rooms are confirmed.</li>
-            <li>When prompted, stand outside the target room.</li>
-            <li>Tap the assigned NFC tag before entering.</li>
-            <li>Enter, walk naturally, and exit.</li>
+            <li>When the app names a room, stand outside that room.</li>
+            <li>Tap that room's NFC tag before entering.</li>
+            <li>Enter the room normally.</li>
+            <li>Walk naturally along the instructed path.</li>
+            <li>Exit the room.</li>
             <li>Tap the same NFC tag again after exiting.</li>
             <li>Wait for the next prompt.</li>
           </ol>
@@ -326,7 +359,7 @@
             <li>If the user forgets a scan or tap, they should press <strong>Report Mistake</strong>.</li>
             <li>If an action is currently active for one room, the app should not allow another room action to start.</li>
             <li>The app should restart the affected step after a mistake.</li>
-            <li>Mistakes include wrong room, wrong scan or tap, forgotten scan or tap, failed QR scan, failed NFC tap, entering too early, or exiting late.</li>
+            <li>Mistakes include wrong room, wrong scan or tap, forgotten scan or tap, failed QR scan, failed NFC tap, AR tracking failure, entering too early, or exiting late.</li>
           </ul>
         </section>
 
@@ -338,9 +371,9 @@
               <ul>
                 <li>The app tests one room at a time.</li>
                 <li>The app keeps the room idle for the reset or cooldown period.</li>
-                <li>The app guides four room actions separated by idle intervals.</li>
+                <li>The app guides room actions separated by idle intervals.</li>
                 <li>The app moves to the next room after the scheduled actions.</li>
-                <li>This is slower but cleaner.</li>
+                <li>This is slower but easier to follow.</li>
               </ul>
             </article>
             <article class="card">
@@ -357,7 +390,7 @@
           </div>
           <div class="callout note">
             <h3>Room state machine</h3>
-            <p><code>Room state ∈ {SETUP, RESETTING, READY_FOR_ACTION, ACTION_ACTIVE, WAITING_IDLE, CLASSIFIED, NEEDS_DISAMBIGUATION}</code></p>
+            <p><code>Room state &isin; {SETUP, RESETTING, READY_FOR_ACTION, ACTION_ACTIVE, WAITING_IDLE, CLASSIFIED, NEEDS_DISAMBIGUATION}</code></p>
           </div>
         </section>
 
@@ -376,6 +409,10 @@
             During normal operation, only one room should have signal <code>1</code> at a time.
             During idle periods, all room signals are <code>0</code>.
           </p>
+          <div class="callout important">
+            <h3>Important</h3>
+            <p>Only one room action should be active at a time. During waiting periods, all room signals stay <code>0</code>.</p>
+          </div>
           <div class="table-wrap">
             <table>
               <caption>Example action-signal table</caption>
@@ -397,7 +434,7 @@
               </tbody>
             </table>
           </div>
-          <p><a href="action-signal-spec.md">Read the action-signal specification.</a></p>
+          <p><a href="action-signal-spec.html">Read the action-signal specification.</a></p>
         </section>
 
         <section id="privacy" class="section">
@@ -406,7 +443,7 @@
             <h3>Privacy caution</h3>
             <ul>
               <li>The app records action timestamps and Wi-Fi metadata.</li>
-              <li>The app should not record audio or video unless explicitly stated.</li>
+              <li>The protocol does not require audio or video recording unless separately stated.</li>
               <li>Device identifiers should be pseudonymized before analysis.</li>
               <li>The user may stop at any time.</li>
               <li>The user should not use the protocol in unsafe situations.</li>
@@ -445,19 +482,19 @@
         <section id="documents" class="section">
           <h2>User-Facing Documents</h2>
           <div class="document-grid">
-            <a class="doc-link" href="participant-instructions.md">
+            <a class="doc-link" href="participant-instructions.html">
               <strong>Participant Instructions</strong>
-              <span>Short steps for AR, QR, and NFC conditions.</span>
+              <span>Friendly steps for AR, QR, and NFC conditions.</span>
             </a>
-            <a class="doc-link" href="user-flow-checklist.md">
+            <a class="doc-link" href="user-flow-checklist.html">
               <strong>User Flow Checklist</strong>
-              <span>Setup, Start Detection, room action, and stop-session checks.</span>
+              <span>Setup, Start Detection, room action, mistake, and finish-session checks.</span>
             </a>
-            <a class="doc-link" href="app-recording-spec.md">
+            <a class="doc-link" href="app-recording-spec.html">
               <strong>App Recording Spec</strong>
               <span>What the app records automatically during the session.</span>
             </a>
-            <a class="doc-link" href="action-signal-spec.md">
+            <a class="doc-link" href="action-signal-spec.html">
               <strong>Action Signal Format</strong>
               <span>Binary room signals, examples, and validation rules.</span>
             </a>
