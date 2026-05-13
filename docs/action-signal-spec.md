@@ -1,6 +1,6 @@
-# Action Signal Specification
+# Action Signal Format
 
-This document defines the room action signals used by the protocol.
+This document defines the room action signals recorded by the study app.
 
 ## Signal Definition
 
@@ -12,42 +12,33 @@ A(t) = [a_1(t), a_2(t), ..., a_N(t)]
 
 For each room `R_i`:
 
-- `a_i(t) = 1` when the user is performing the detection action in room `R_i`.
+- `a_i(t) = 1` only while the user is performing the instructed enter-walk-exit action in room `R_i`.
 - `a_i(t) = 0` otherwise.
 
-In normal operation, exactly one room may be active during an action interval. During idle periods, all room signals are `0`.
+During normal operation, only one room should have signal `1` at a time. During idle periods, all room signals are `0`.
+
+## Start Detection
+
+After room setup is complete, the user taps **Start Detection**. This single action starts the guided detection session and starts network capture through the connected sniffer. The user does not separately operate the sniffer.
 
 ## Action Start and End
 
 | Method | Start definition | End definition |
 | --- | --- | --- |
-| AR + button | User taps **Start Action** while the target room is assigned by app state. | User taps **Action Finished** after exiting the target room. |
+| AR + button | User taps **Start Action** while the target room is assigned by app state and the room map is available. | User taps **Action Finished** after exiting the target room. |
 | QR code | User scans the QR code mapped to the target room before entering. | User scans the same QR code after exiting. |
 | NFC tag | User taps the NFC tag mapped to the target room before entering. | User taps the same NFC tag after exiting. |
 
-## Event Log Schema
+## QR/NFC Room Mapping
 
-| Field | Description |
-| --- | --- |
-| `run_id` | Random identifier for the study run. |
-| `participant_id_random` | Random participant identifier. |
-| `home_id_random` | Random home identifier. |
-| `method_condition` | `AR`, `QR`, or `NFC`. |
-| `trial_number` | Trial index within the run. |
-| `room_id` | Random or study-local room identifier. |
-| `room_label` | Participant-facing label, such as Bedroom or Kitchen. |
-| `event_type` | Event type, such as `action_start`, `action_end`, `mistake_reported`, `scan_failed`, or `tracking_lost`. |
-| `timestamp` | App timestamp using a synchronized clock. |
-| `action_start_time` | Start timestamp for completed action intervals. |
-| `action_end_time` | End timestamp for completed action intervals. |
-| `action_duration` | Difference between end and start time. |
-| `idle_duration_before_action` | Idle time before action start. |
-| `tag_id` | Pseudonymous QR or NFC tag identifier, if applicable. |
-| `expected_room_id` | Room requested by the app. |
-| `observed_room_id` | Room inferred from scan, tap, or AR state. |
-| `method_success` | Whether the event completed successfully. |
-| `retry_count` | Number of retries for the current step. |
-| `error_reported` | Whether the participant reported a mistake. |
+For QR-code and NFC-tag methods, the app does not require a geometric room map. The app already recognizes valid tag IDs, but the user creates the mapping:
+
+```text
+room name <-> QR code ID
+room name <-> NFC tag ID
+```
+
+After the mapping is confirmed, the app can guide room actions by room name and tag ID.
 
 ## Example JSON Event Objects
 
@@ -104,8 +95,8 @@ time,bedroom,kitchen,living_room,office
 - Only one room action can be active at a time.
 - During idle periods, all room signals must be `0`.
 - For QR/NFC, the same tag must start and end the action.
-- If the app asks for Bedroom but the user scans Kitchen, the app should show an error and restart that action step.
-- If an action is active for Bedroom and the user scans a different room, the app should reject it or ask the user to report a mistake.
-- Mistakes should be logged, not erased.
-- Action intervals with missing start or end events should be marked invalid until corrected or excluded.
-- Network logs should use pseudonymized MAC addresses and should not include exact home addresses or real participant identities.
+- If the app asks for Bedroom but the user scans Kitchen, the app should say: "This tag is registered to Kitchen, but the current room is Bedroom. Please scan the Bedroom tag or press Report Mistake."
+- If the user forgets a scan or tap, they should press **Report Mistake**.
+- If an action is active for one room, the app should not allow another room action to start.
+- Mistakes should be logged, and the app should restart the affected step.
+- Network metadata should use pseudonymized device identifiers before analysis or public sharing.
