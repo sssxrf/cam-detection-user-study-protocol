@@ -1,99 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" role="img" aria-labelledby="title desc">
-  <title id="title">Corridor apartment two-color grouping</title>
-  <desc id="desc">A corridor apartment where Entry, Bedroom, Bathroom, and Living Room are Group A, while Hallway and Kitchen are Group B.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" role="img" aria-labelledby="title desc">
+  <title id="title">Corridor apartment floor plan with two-color grouping</title>
+  <desc id="desc">A one-level corridor apartment floor plan. Entry, Bedroom, Bathroom, and Living Room are labeled Group A. Hallway and Kitchen are labeled Group B. Gray connection lines are overlaid between connected areas.</desc>
   <style>
-    :root { color-scheme: light; }
     text { font-family: Arial, Helvetica, sans-serif; fill: #24313d; }
-    .wall { fill: #fff; stroke: #aab5bf; stroke-width: 5; rx: 18; }
-    .area-a { fill: #d9f3f0; stroke: #1b8a87; }
-    .area-b { fill: #ffe4b8; stroke: #c77713; }
-    .node-a { fill: #d9f3f0; stroke: #1b8a87; }
-    .node-b { fill: #ffe4b8; stroke: #c77713; }
-    .connection { stroke: #9099a3; stroke-width: 6; stroke-linecap: round; fill: none; }
-    .label { font-size: 18px; font-weight: 700; }
-    .group-mark { font-size: 22px; font-weight: 800; fill: #172533; }
-    .small { font-size: 15px; fill: #5d6b7a; }
-    .draw-in { stroke-dasharray: 600; stroke-dashoffset: 600; animation: draw 1s ease forwards; }
-    .edge-delay { animation-delay: .8s; }
+    .shell { fill: #ffffff; stroke: #4c5966; stroke-width: 8; stroke-linejoin: round; }
+    .room { stroke: #4c5966; stroke-width: 4; rx: 12; }
+    .room-a { fill: #d9f3f0; stroke: #1b8a87; }
+    .room-b { fill: #ffe4b8; stroke: #c77713; }
+    .wall-line { stroke: #4c5966; stroke-width: 4; stroke-linecap: round; fill: none; }
+    .connection { stroke: #7d8791; stroke-width: 5; stroke-linecap: round; fill: none; opacity: .9; }
+    .door { stroke: #f8fafc; stroke-width: 12; stroke-linecap: round; fill: none; }
+    .label { font-size: 22px; font-weight: 700; }
+    .group-label { font-size: 30px; font-weight: 800; fill: #172533; }
+    .round-label { font-size: 18px; font-weight: 700; fill: #5d6b7a; }
+    .draw-in { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 1s ease forwards; }
+    .connection.draw-in { animation-delay: .8s; }
     .paint-a { animation: paintA .7s ease 1.7s both; }
     .paint-b { animation: paintB .7s ease 2.45s both; }
-    .round-a { animation: pulseA 1s ease 3.2s 2; }
-    .round-b { animation: pulseB 1s ease 4.4s 2; }
+    .pulse-a { animation: pulseA 1s ease 3.2s 2; }
+    .pulse-b { animation: pulseB 1s ease 4.4s 2; }
     @keyframes draw { to { stroke-dashoffset: 0; } }
     @keyframes paintA { from { fill: #fff; } to { fill: #d9f3f0; } }
     @keyframes paintB { from { fill: #fff; } to { fill: #ffe4b8; } }
-    @keyframes pulseA { 50% { stroke-width: 9; filter: drop-shadow(0 0 5px #1b8a87); } }
-    @keyframes pulseB { 50% { stroke-width: 9; filter: drop-shadow(0 0 5px #c77713); } }
+    @keyframes pulseA { 50% { stroke-width: 8; filter: drop-shadow(0 0 6px #1b8a87); } }
+    @keyframes pulseB { 50% { stroke-width: 8; filter: drop-shadow(0 0 6px #c77713); } }
     @media (prefers-reduced-motion: reduce) {
-      .draw-in, .paint-a, .paint-b, .round-a, .round-b { animation: none; stroke-dashoffset: 0; }
+      .draw-in, .paint-a, .paint-b, .pulse-a, .pulse-b { animation: none; stroke-dashoffset: 0; }
     }
   </style>
 
-  <rect width="920" height="460" fill="#f8fafc"/>
-  <text x="34" y="42" class="label">Floor plan</text>
-  <text x="522" y="42" class="label">Connection graph</text>
+  <rect width="760" height="500" fill="#f8fafc"/>
+  <text x="36" y="42" class="label">Corridor apartment</text>
 
-  <g aria-label="Simplified corridor apartment floor plan">
-    <rect x="34" y="74" width="128" height="96" class="wall area-a paint-a round-a"/>
-    <text x="56" y="114" class="label">Entry</text>
-    <text x="88" y="146" class="group-mark">A</text>
+  <g aria-label="One-level corridor apartment floor plan">
+    <rect x="44" y="76" width="672" height="360" class="shell wall-line draw-in"/>
 
-    <rect x="192" y="74" width="118" height="302" class="wall area-b paint-b round-b"/>
-    <text x="216" y="213" class="label">Hallway</text>
-    <text x="242" y="246" class="group-mark">B</text>
+    <rect x="44" y="260" width="150" height="176" class="room room-a paint-a pulse-a"/>
+    <rect x="194" y="76" width="146" height="360" class="room room-b paint-b pulse-b"/>
+    <rect x="340" y="76" width="184" height="110" class="room room-a paint-a pulse-a"/>
+    <rect x="340" y="186" width="184" height="100" class="room room-a paint-a pulse-a"/>
+    <rect x="340" y="286" width="184" height="150" class="room room-a paint-a pulse-a"/>
+    <rect x="524" y="286" width="192" height="150" class="room room-b paint-b pulse-b"/>
 
-    <rect x="340" y="74" width="132" height="92" class="wall area-a paint-a round-a"/>
-    <text x="365" y="113" class="label">Bedroom</text>
-    <text x="397" y="145" class="group-mark">A</text>
+    <path d="M194 76V436 M340 76V436 M340 186H524 M340 286H716 M524 286V436" class="wall-line draw-in"/>
 
-    <rect x="340" y="184" width="132" height="82" class="wall area-a paint-a round-a"/>
-    <text x="359" y="218" class="label">Bathroom</text>
-    <text x="397" y="248" class="group-mark">A</text>
+    <line x1="194" y1="332" x2="194" y2="364" class="door"/>
+    <line x1="340" y1="120" x2="340" y2="152" class="door"/>
+    <line x1="340" y1="220" x2="340" y2="252" class="door"/>
+    <line x1="340" y1="342" x2="340" y2="382" class="door"/>
+    <line x1="524" y1="342" x2="524" y2="382" class="door"/>
 
-    <rect x="340" y="286" width="132" height="90" class="wall area-a paint-a round-a"/>
-    <text x="361" y="324" class="label">Living</text>
-    <text x="397" y="355" class="group-mark">A</text>
+    <line x1="119" y1="348" x2="267" y2="256" class="connection draw-in"/>
+    <line x1="267" y1="256" x2="432" y2="131" class="connection draw-in"/>
+    <line x1="267" y1="256" x2="432" y2="236" class="connection draw-in"/>
+    <line x1="267" y1="256" x2="432" y2="361" class="connection draw-in"/>
+    <line x1="432" y1="361" x2="620" y2="361" class="connection draw-in"/>
 
-    <rect x="340" y="390" width="132" height="52" class="wall area-b paint-b round-b"/>
-    <text x="368" y="422" class="label">Kitchen</text>
-    <text x="445" y="424" class="group-mark">B</text>
-
-    <line x1="162" y1="122" x2="192" y2="122" class="connection draw-in"/>
-    <line x1="310" y1="120" x2="340" y2="120" class="connection draw-in"/>
-    <line x1="310" y1="225" x2="340" y2="225" class="connection draw-in"/>
-    <line x1="310" y1="331" x2="340" y2="331" class="connection draw-in"/>
-    <line x1="406" y1="376" x2="406" y2="390" class="connection draw-in"/>
+    <text x="82" y="338" class="label">Entry</text>
+    <text x="108" y="374" class="group-label">A</text>
+    <text x="224" y="244" class="label">Hallway</text>
+    <text x="258" y="282" class="group-label">B</text>
+    <text x="382" y="124" class="label">Bedroom</text>
+    <text x="422" y="160" class="group-label">A</text>
+    <text x="374" y="229" class="label">Bathroom</text>
+    <text x="422" y="263" class="group-label">A</text>
+    <text x="362" y="350" class="label">Living Room</text>
+    <text x="422" y="386" class="group-label">A</text>
+    <text x="576" y="350" class="label">Kitchen</text>
+    <text x="612" y="386" class="group-label">B</text>
   </g>
 
-  <g aria-label="Corridor apartment connection graph">
-    <line x1="560" y1="118" x2="680" y2="220" class="connection draw-in edge-delay"/>
-    <line x1="680" y1="220" x2="800" y2="96" class="connection draw-in edge-delay"/>
-    <line x1="680" y1="220" x2="802" y2="220" class="connection draw-in edge-delay"/>
-    <line x1="680" y1="220" x2="800" y2="340" class="connection draw-in edge-delay"/>
-    <line x1="800" y1="340" x2="680" y2="394" class="connection draw-in edge-delay"/>
-
-    <circle cx="560" cy="118" r="42" class="node-a paint-a round-a"/>
-    <text x="539" y="113" class="small">Entry</text>
-    <text x="552" y="138" class="group-mark">A</text>
-
-    <circle cx="680" cy="220" r="48" class="node-b paint-b round-b"/>
-    <text x="653" y="215" class="small">Hallway</text>
-    <text x="672" y="242" class="group-mark">B</text>
-
-    <circle cx="800" cy="96" r="44" class="node-a paint-a round-a"/>
-    <text x="771" y="92" class="small">Bedroom</text>
-    <text x="792" y="118" class="group-mark">A</text>
-
-    <circle cx="802" cy="220" r="44" class="node-a paint-a round-a"/>
-    <text x="770" y="216" class="small">Bathroom</text>
-    <text x="794" y="242" class="group-mark">A</text>
-
-    <circle cx="800" cy="340" r="44" class="node-a paint-a round-a"/>
-    <text x="779" y="336" class="small">Living</text>
-    <text x="792" y="362" class="group-mark">A</text>
-
-    <circle cx="680" cy="394" r="42" class="node-b paint-b round-b"/>
-    <text x="652" y="389" class="small">Kitchen</text>
-    <text x="672" y="414" class="group-mark">B</text>
-  </g>
+  <text x="44" y="468" class="round-label">Round 1: Group A target areas  |  Round 2: Group B target areas</text>
 </svg>
