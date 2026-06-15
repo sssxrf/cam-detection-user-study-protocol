@@ -28,7 +28,7 @@
     <div class="article-hero">
       <p class="eyebrow">Formal signal definition</p>
       <h1>Action Signal Format</h1>
-      <p class="lead">The app records one binary action signal for each room. These signals mark when the user is performing the instructed room action.</p>
+      <p class="lead">The app records one binary action signal for each area. These signals mark when the user is performing the instructed target-area action.</p>
       <div class="hero-actions">
         <a class="button" href="app-recording-spec.html">App Recording Spec</a>
         <a class="button secondary" href="index.html">Back Home</a>
@@ -38,14 +38,15 @@
     <article class="article-content">
       <section class="section">
         <h2>Signal Definition</h2>
-        <p>For a home with <strong>N</strong> rooms, the app records <strong>N</strong> binary signals:</p>
+        <p>For a home with <strong>N</strong> areas, the app records <strong>N</strong> binary action signals:</p>
         <pre class="formula"><code>A(t) = [a_1(t), a_2(t), ..., a_N(t)]</code></pre>
-        <p>For each room <strong>R_i</strong>:</p>
+        <p>For each area <strong>i</strong>:</p>
         <ul class="check-list">
-          <li><code>a_i(t) = 1</code> only during the instructed action in room <strong>R_i</strong>.</li>
+          <li><code>a_i(t) = 1</code> only during intentional action in area <strong>i</strong>.</li>
           <li><code>a_i(t) = 0</code> otherwise.</li>
-          <li>All room signals are <code>0</code> during idle periods.</li>
-          <li>At most one room should be active in normal operation.</li>
+          <li>All area signals are <code>0</code> during idle periods.</li>
+          <li>At most one target-area action should be active in normal operation.</li>
+          <li>Transit should not be silently counted as a target-area action.</li>
         </ul>
       </section>
 
@@ -59,23 +60,27 @@
                 <th>Method</th>
                 <th>Start</th>
                 <th>End</th>
+                <th>Transit handling</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th>AR + Button</th>
-                <td>User taps <strong>Start Action</strong> before entering the target room.</td>
-                <td>User taps <strong>Action Finished</strong> after exiting the target room.</td>
+                <td>User taps <strong>Start Action</strong> before entering the target area.</td>
+                <td>User taps <strong>Action Finished</strong> after exiting the target area.</td>
+                <td>The app logs required pass-through movement or keeps it outside the target-area action window.</td>
               </tr>
               <tr>
                 <th>QR Code</th>
-                <td>User scans the QR code mapped to the target room before entering.</td>
+                <td>User scans the QR code mapped to the target area before entering.</td>
                 <td>User scans the same QR code again after exiting.</td>
+                <td>The app prompts for any required transit and records it separately when needed.</td>
               </tr>
               <tr>
                 <th>NFC Tag</th>
-                <td>User taps the NFC tag mapped to the target room before entering.</td>
+                <td>User taps the NFC tag mapped to the target area before entering.</td>
                 <td>User taps the same NFC tag again after exiting.</td>
+                <td>The app prompts for any required transit and records it separately when needed.</td>
               </tr>
             </tbody>
           </table>
@@ -86,9 +91,22 @@
         <h2>QR/NFC Mapping</h2>
         <p>
           QR and NFC methods do not require a geometric room map.
-          The app already knows valid QR-code IDs and NFC-tag IDs, and the user creates the room mapping during setup:
+          The app already knows valid QR-code IDs and NFC-tag IDs, and the user creates the area mapping during setup:
         </p>
-        <pre class="formula"><code>room name &lt;-&gt; tag ID</code></pre>
+        <pre class="formula"><code>area name &lt;-&gt; tag ID</code></pre>
+      </section>
+
+      <section class="section">
+        <h2>Transit Options</h2>
+        <p>During transit, the app uses one of two explicit options:</p>
+        <ul class="check-list">
+          <li><strong>Option A:</strong> all area action signals remain <code>0</code> and a separate transit event is logged.</li>
+          <li><strong>Option B:</strong> a transit signal for the pass-through area is recorded.</li>
+        </ul>
+        <div class="callout important">
+          <h3>Important</h3>
+          <p>Guard/transit areas are not treated as clean non-target areas during the current round.</p>
+        </div>
       </section>
 
       <section class="section">
@@ -100,16 +118,18 @@
                 <th>Time</th>
                 <th>Bedroom</th>
                 <th>Kitchen</th>
-                <th>Living Room</th>
+                <th>Hallway</th>
                 <th>Office</th>
+                <th>Transit event</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>00:00</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>00:10</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>00:24</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>01:00</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
-              <tr><td>01:16</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>00:00</td><td>0</td><td>0</td><td>0</td><td>0</td><td>None</td></tr>
+              <tr><td>00:10</td><td>1</td><td>0</td><td>0</td><td>0</td><td>None</td></tr>
+              <tr><td>00:24</td><td>0</td><td>0</td><td>0</td><td>0</td><td>None</td></tr>
+              <tr><td>00:40</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Hallway transit</td></tr>
+              <tr><td>01:00</td><td>0</td><td>1</td><td>0</td><td>0</td><td>None</td></tr>
+              <tr><td>01:16</td><td>0</td><td>0</td><td>0</td><td>0</td><td>None</td></tr>
             </tbody>
           </table>
         </div>
@@ -118,9 +138,10 @@
       <section class="section">
         <h2>Validation Rules</h2>
         <ul class="check-list">
-          <li>Only one room can be active at a time.</li>
+          <li>Only one target-area action can be active at a time.</li>
           <li>The same QR/NFC tag starts and ends the action.</li>
-          <li>The app rejects the wrong room tag.</li>
+          <li>The app rejects the wrong area tag.</li>
+          <li>Transit events are logged separately or represented as transit signals.</li>
           <li>Report Mistake restarts the affected step.</li>
         </ul>
       </section>

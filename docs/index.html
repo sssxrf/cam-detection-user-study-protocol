@@ -18,13 +18,18 @@
         <a href="#overview">Overview</a>
         <a href="#records">What the App Records</a>
         <a href="#methods">Choose a Method</a>
-        <a href="#room-setup">Room Setup</a>
+        <a href="#room-setup">Area Setup</a>
+        <a href="#connection-setup">Connection Setup</a>
+        <a href="#automatic-grouping">Automatic Grouping</a>
+        <a href="#two-group-layouts">Two-Group Layouts</a>
         <a href="#start-detection">Start Detection</a>
         <a href="#ar-button">AR + Button</a>
         <a href="#qr-code">QR Code</a>
         <a href="#nfc-tag">NFC Tag</a>
         <a href="#error-handling">Error Handling</a>
         <a href="#scheduling">Multi-Room Scheduling</a>
+        <a href="#guard-transit">Guard and Transit Areas</a>
+        <a href="#disambiguation">Disambiguation</a>
         <a href="#signal-format">Action Signal Format</a>
         <a href="#privacy">Privacy and Safety</a>
         <a href="#metrics">Study Metrics</a>
@@ -38,9 +43,10 @@
         <p class="eyebrow">User-study app workflow</p>
         <h1>Multi-Room Hidden-Camera Detection Protocol</h1>
         <p class="lead">
-          Use the study app to check multiple rooms with one of three methods: AR + Button, QR Code, or NFC Tag.
-          The app records room-level action signals and Wi-Fi metadata from a connected sniffer.
-          QR and NFC do not require a room map; the user maps each room to a tag during setup.
+          Use the study app to check multiple rooms and connected areas with one of three methods: AR + Button, QR Code, or NFC Tag.
+          The app records area-level action signals and Wi-Fi metadata from a connected sniffer.
+          QR and NFC do not require a geometric room map; the user maps each area entrance to a tag during setup.
+          Connected rooms, hallways, entryways, and pass-through areas are handled before detection begins.
           Start Detection begins both the guided session and network capture.
         </p>
         <div class="hero-actions" aria-label="Related pages">
@@ -57,13 +63,18 @@
           <li><a href="#overview-text">Overview</a></li>
           <li><a href="#records">What the App Records</a></li>
           <li><a href="#methods">Choose a Method</a></li>
-          <li><a href="#room-setup">Room Setup</a></li>
+          <li><a href="#room-setup">Area Setup</a></li>
+          <li><a href="#connection-setup">Connection Setup</a></li>
+          <li><a href="#automatic-grouping">Automatic Grouping</a></li>
+          <li><a href="#two-group-layouts">Example Two-Group Layouts</a></li>
           <li><a href="#start-detection">Start Detection</a></li>
           <li><a href="#ar-button">AR + Button Instructions</a></li>
           <li><a href="#qr-code">QR Code Instructions</a></li>
           <li><a href="#nfc-tag">NFC Tag Instructions</a></li>
           <li><a href="#error-handling">Error Handling</a></li>
           <li><a href="#scheduling">Multi-Room Scheduling</a></li>
+          <li><a href="#guard-transit">Guard and Transit Areas</a></li>
+          <li><a href="#disambiguation">Disambiguation</a></li>
           <li><a href="#signal-format">Action Signal Format</a></li>
           <li><a href="#privacy">Privacy and Safety</a></li>
           <li><a href="#metrics">Study Metrics</a></li>
@@ -75,29 +86,38 @@
         <section id="overview-text" class="section">
           <h2>Overview</h2>
           <p>
-            The study app guides the user through room actions: stand outside a room, mark the start of the action, enter, walk naturally, exit, and mark the end.
+            The study app guides the user through area actions: stand outside an area, mark the start of the action, enter, walk naturally, exit, and mark the end.
             The app compares those action intervals with Wi-Fi metadata collected through the connected sniffer during the same session.
           </p>
           <p>
-            The goal is to study whether motion-activated Wi-Fi monitoring devices show traffic changes that repeatedly line up with room activity.
+            The goal is to study whether motion-activated Wi-Fi monitoring devices show traffic changes that repeatedly line up with target-area activity.
             The protocol does not prove that a device is a camera and should not be treated as a safety guarantee.
           </p>
+          <p>
+            In multi-room homes, reaching a target area can require walking through hallways, entryways, connected living spaces, or other rooms.
+            Movement in those connected areas can trigger nearby devices and make a device look correlated with the wrong place.
+            To reduce that ambiguity, the user sets up areas and their connections before detection; the app then groups non-conflicting areas into separate detection rounds.
+          </p>
+          <div class="callout important">
+            <h3>Important</h3>
+            <p>Non-target does not mean camera-free. A non-target area may still contain or trigger a device; the app uses area roles to interpret the signal carefully.</p>
+          </div>
           <div class="callout participant">
             <h3>Participant instruction</h3>
-            <p>The user should follow the app prompts, move naturally, and press <strong>Report Mistake</strong> if a scan, tap, room entry, or button press goes wrong.</p>
+            <p>The user should follow the app prompts, move naturally, and press <strong>Report Mistake</strong> if a scan, tap, area entry, route, or button press goes wrong.</p>
           </div>
           <div class="three-column how-it-works" aria-label="How it works">
             <article class="card">
-              <h3>1. Set up rooms</h3>
-              <p>Confirm the AR room map, or map each QR/NFC tag to a room entrance.</p>
+              <h3>1. Set up areas</h3>
+              <p>Confirm the AR area map, or map each QR/NFC tag to an area entrance.</p>
             </article>
             <article class="card">
-              <h3>2. Tap Start Detection</h3>
-              <p>The app starts the session timer and starts network capture through the connected sniffer.</p>
+              <h3>2. Confirm connections</h3>
+              <p>Mark doorways, visible areas, pass-through routes, hallways, and entryways so the app can build a conflict graph.</p>
             </article>
             <article class="card">
-              <h3>3. Follow room prompts</h3>
-              <p>Enter, walk, exit, and mark each action exactly when the app asks.</p>
+              <h3>3. Follow grouped rounds</h3>
+              <p>Tap Start Detection, then test one automatically generated target group at a time.</p>
             </article>
           </div>
         </section>
@@ -105,7 +125,7 @@
         <section id="records" class="section">
           <h2>What the App Records</h2>
           <p>
-            The app records the timing of room actions and Wi-Fi metadata from the connected sniffer.
+            The app records the timing of area actions and Wi-Fi metadata from the connected sniffer.
             It does not need participant names, exact home addresses, real MAC addresses, camera serial numbers, audio, or video for this protocol.
           </p>
           <div class="table-wrap">
@@ -121,22 +141,27 @@
               <tbody>
                 <tr>
                   <th>Session metadata</th>
-                  <td>Random participant ID, random home/session ID, method condition, app version, room list, session timer</td>
+                  <td>Random participant ID, random home/session ID, method condition, app version, area list, session timer</td>
                   <td>Information that describes the study run without naming the user.</td>
                 </tr>
                 <tr>
+                  <th>Connection setup</th>
+                  <td>Area list, doorway or open-boundary links, visible-area links, pass-through routes, confirmed connection graph, app-generated target groups</td>
+                  <td>How areas are connected and how the app separates them into detection rounds.</td>
+                </tr>
+                <tr>
                   <th>Action events</th>
-                  <td>Action start time, action end time, room ID, action duration, idle duration, retry count, mistake reports</td>
-                  <td>The moments when the user starts and finishes each instructed room action.</td>
+                  <td>Action start time, action end time, area ID, action duration, idle duration, transit event when used, retry count, mistake reports</td>
+                  <td>The moments when the user starts and finishes each instructed area action.</td>
                 </tr>
                 <tr>
                   <th>QR/NFC events</th>
-                  <td>Tag ID, room name, scan/tap timestamp, expected room, scanned/tapped room, success/failure</td>
-                  <td>Which room tag was used and whether it matched the app prompt.</td>
+                  <td>Tag ID, area name, scan/tap timestamp, expected area, scanned/tapped area, success/failure</td>
+                  <td>Which area tag was used and whether it matched the app prompt.</td>
                 </tr>
                 <tr>
                   <th>AR + button events</th>
-                  <td>Button timestamps, tracking state, room entry/exit estimate if available, tracking failures</td>
+                  <td>Button timestamps, tracking state, area entry/exit estimate if available, tracking failures</td>
                   <td>The button interval and optional AR information that helps the app interpret movement.</td>
                 </tr>
                 <tr>
@@ -151,19 +176,19 @@
 
         <section id="methods" class="section">
           <h2>Choose a Method</h2>
-          <p>The user study compares three ways for the app to record the room action interval.</p>
+          <p>The user study compares three ways for the app to record the target-area action interval.</p>
           <div class="three-column">
             <article class="card">
               <h3>AR + click button</h3>
-              <p>The app has or loads a room map on the phone. The user confirms the rooms, then taps Start Action before entering and Action Finished after exiting.</p>
+              <p>The app has or loads an area map on the phone. The user confirms the areas, then taps Start Action before entering and Action Finished after exiting.</p>
             </article>
             <article class="card">
               <h3>QR code</h3>
-              <p>No geometric room map is required. The app already knows valid QR-code IDs. The user places or selects one QR code at each room entrance and maps it to the room.</p>
+              <p>No geometric room map is required. The app already knows valid QR-code IDs. The user places or selects one QR code at each area entrance and maps it to the area.</p>
             </article>
             <article class="card">
               <h3>NFC tag</h3>
-              <p>No geometric room map is required. The app already knows valid NFC-tag IDs. The user places or selects one NFC tag at each room entrance and maps it to the room.</p>
+              <p>No geometric room map is required. The app already knows valid NFC-tag IDs. The user places or selects one NFC tag at each area entrance and maps it to the area.</p>
             </article>
           </div>
           <div class="table-wrap">
@@ -172,7 +197,7 @@
               <thead>
                 <tr>
                   <th>Method</th>
-                  <th>Room setup</th>
+                  <th>Area setup</th>
                   <th>How action starts</th>
                   <th>How action ends</th>
                 </tr>
@@ -180,19 +205,19 @@
               <tbody>
                 <tr>
                   <th>AR + button</th>
-                  <td>The app uses a room map or room layout on the phone.</td>
+                  <td>The app uses an area map or layout on the phone.</td>
                   <td>User taps <strong>Start Action</strong>.</td>
                   <td>User taps <strong>Action Finished</strong> after exiting.</td>
                 </tr>
                 <tr>
                   <th>QR code</th>
-                  <td>User maps each physical room to one app-recognized QR code.</td>
+                  <td>User maps each physical area entrance to one app-recognized QR code.</td>
                   <td>User scans the assigned QR code before entering.</td>
                   <td>User scans the same QR code after exiting.</td>
                 </tr>
                 <tr>
                   <th>NFC tag</th>
-                  <td>User maps each physical room to one app-recognized NFC tag.</td>
+                  <td>User maps each physical area entrance to one app-recognized NFC tag.</td>
                   <td>User taps the assigned NFC tag before entering.</td>
                   <td>User taps the same NFC tag after exiting.</td>
                 </tr>
@@ -202,30 +227,31 @@
         </section>
 
         <section id="room-setup" class="section">
-          <h2>Room Setup</h2>
-          <h3>Room setup for QR and NFC methods</h3>
+          <h2>Area Setup</h2>
+          <h3>Area setup for QR and NFC methods</h3>
           <p>
-            In the QR-code and NFC-tag methods, the user performs the room setup.
-            The app already recognizes the available QR-code or NFC-tag IDs, but it does not know which physical room each tag represents.
-            The user places or selects one tag at each room entrance, scans or taps it, enters the room name, and confirms the mapping.
-            After setup, the app can guide the user room by room without needing a geometric room map.
+            An <strong>area</strong> is a user-defined space such as a bedroom, kitchen, hallway, entryway, office, or open-plan living area.
+            In the QR-code and NFC-tag methods, the user performs the area setup.
+            The app already recognizes the available QR-code or NFC-tag IDs, but it does not know which physical area each tag represents.
+            The user places or selects one tag for each area entrance, scans or taps it, enters the area name, and confirms the mapping.
+            After setup, the app can guide the user area by area without needing a geometric room map.
           </p>
           <ol class="steps">
-            <li><strong>Choose the number of rooms.</strong> The user tells the app how many rooms will be included in the study.</li>
-            <li><strong>Assign a room tag.</strong> For each room, the user places or selects one QR code or NFC tag near the room entrance.</li>
+            <li><strong>Choose the number of areas.</strong> The user tells the app how many areas will be included in the study.</li>
+            <li><strong>Include pass-through spaces.</strong> Areas may include rooms, hallways, entryways, connected living spaces, and other spaces the user may pass through.</li>
+            <li><strong>Assign an area tag.</strong> For each area, the user places or selects one QR code or NFC tag near the area entrance.</li>
             <li><strong>Register the tag.</strong> The user scans the QR code or taps the NFC tag.</li>
-            <li><strong>Name the room.</strong> The user enters a room name, such as Bedroom, Kitchen, Living Room, Office, or Bathroom.</li>
-            <li><strong>Confirm the mapping.</strong> The app shows the tag ID and room name. The user confirms that the mapping is correct.</li>
-            <li><strong>Review all rooms.</strong> The app shows a verification table.</li>
-            <li><strong>Start detection.</strong> After all rooms are confirmed, the user taps Start Detection. At that moment, the app starts the session and starts network capture through the connected sniffer.</li>
+            <li><strong>Name the area.</strong> The user enters an area name, such as Bedroom, Kitchen, Hallway, Entryway, Living Room, Office, or Bathroom.</li>
+            <li><strong>Confirm the mapping.</strong> The app shows the tag ID and area name. The user confirms that the mapping is correct.</li>
+            <li><strong>Review all areas.</strong> The app shows a verification table.</li>
           </ol>
           <div class="table-wrap">
             <table>
-              <caption>Room setup review table</caption>
+              <caption>Area setup review table</caption>
               <thead>
                 <tr>
-                  <th>Room number</th>
-                  <th>Room name</th>
+                  <th>Area number</th>
+                  <th>Area name</th>
                   <th>QR/NFC tag ID</th>
                   <th>Confirmed</th>
                 </tr>
@@ -233,35 +259,181 @@
               <tbody>
                 <tr><td>1</td><td>Bedroom</td><td>tag_001</td><td>Yes</td></tr>
                 <tr><td>2</td><td>Kitchen</td><td>tag_002</td><td>Yes</td></tr>
-                <tr><td>3</td><td>Living Room</td><td>tag_003</td><td>Yes</td></tr>
+                <tr><td>3</td><td>Hallway</td><td>tag_003</td><td>Yes</td></tr>
               </tbody>
             </table>
           </div>
 
-          <h3>Room setup for AR + button method</h3>
+          <h3>Area setup for AR + button method</h3>
           <ul>
-            <li>The app already has or loads the room map.</li>
-            <li>The user confirms the list of rooms shown by the app.</li>
+            <li>The app already has or loads the room/area map.</li>
+            <li>The user confirms the areas shown by the app, including rooms, hallways, entryways, connected spaces, and open-plan areas.</li>
             <li>The user confirms the starting location if needed.</li>
-            <li>The user taps <strong>Start Detection</strong>.</li>
-            <li>The app starts the session and starts network capture through the connected sniffer.</li>
           </ul>
+        </section>
+
+        <section id="connection-setup" class="section">
+          <h2>Connection Setup</h2>
+          <p>
+            A <strong>connection graph</strong> is created during setup. Each node is an area. An edge means two areas are directly connected, visible from each other, or likely to be triggered by the same movement.
+            The app asks the user to confirm these connections before detection begins.
+          </p>
+          <div class="callout important">
+            <h3>Important</h3>
+            <p>Passing through an area can trigger devices there. The app records that route context instead of silently counting transit as a target-area action.</p>
+          </div>
+          <ol class="steps">
+            <li>After naming areas, the app asks which areas are connected.</li>
+            <li>The user marks areas that share a doorway or open boundary.</li>
+            <li>The user marks areas that are visible from each other.</li>
+            <li>The user marks areas that must be passed through to reach another area.</li>
+            <li>The user marks hallways or entryways that connect multiple rooms.</li>
+            <li>The app shows the resulting connection graph.</li>
+            <li>The user confirms or edits the graph.</li>
+          </ol>
+          <div class="graph-example" aria-label="Example connection graph">
+            <span class="graph-node">Bedroom</span>
+            <span class="graph-edge" aria-hidden="true"></span>
+            <span class="graph-node">Hallway</span>
+            <span class="graph-edge" aria-hidden="true"></span>
+            <span class="graph-node">Kitchen</span>
+            <span class="graph-edge" aria-hidden="true"></span>
+            <span class="graph-node">Living Room</span>
+          </div>
+        </section>
+
+        <section id="automatic-grouping" class="section">
+          <h2>Automatic Grouping</h2>
+          <p>
+            After connection setup, the app builds a <strong>conflict graph</strong>.
+            The conflict graph includes direct connections, visibility relationships, doorway conflicts, and pass-through relationships.
+            The app then uses <strong>graph coloring</strong>: it splits areas into groups so that areas in the same group are not connected or likely to trigger each other.
+            Each group is tested in a separate detection round.
+          </p>
+          <p>
+            In a two-group example, <strong>Group A</strong> is tested in Round 1 and <strong>Group B</strong> is tested in Round 2.
+            Some homes need more than two groups, and the app can use more groups when two-coloring is not enough.
+          </p>
+          <div class="callout note">
+            <h3>App note</h3>
+            <p>The app groups areas to reduce ambiguity. If the graph can be split into two groups, the protocol uses two rounds. If two groups are not enough, the app uses three or more groups.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <caption>Example app-generated groups</caption>
+              <thead>
+                <tr>
+                  <th>Group</th>
+                  <th>Example target areas</th>
+                  <th>Round</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th>Group 1</th><td>Bedroom, Kitchen</td><td>Round 1</td></tr>
+                <tr><th>Group 2</th><td>Bathroom, Office</td><td>Round 2</td></tr>
+                <tr><th>Group 3</th><td>Hallway, Living Room</td><td>Round 3 when needed</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <caption>Roles during an example current round</caption>
+              <thead>
+                <tr>
+                  <th>Area</th>
+                  <th>Connected to</th>
+                  <th>Group</th>
+                  <th>Role in current round</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th>Bedroom</th><td>Hallway</td><td>Group 1</td><td>Target area</td></tr>
+                <tr><th>Kitchen</th><td>Hallway, Living Room</td><td>Group 1</td><td>Target area</td></tr>
+                <tr><th>Hallway</th><td>Bedroom, Kitchen, Bathroom, Office</td><td>Group 3</td><td>Guard/transit area</td></tr>
+                <tr><th>Bathroom</th><td>Hallway</td><td>Group 2</td><td>Idle non-target area</td></tr>
+                <tr><th>Office</th><td>Hallway</td><td>Group 2</td><td>Idle non-target area</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="two-group-layouts" class="section">
+          <h2>Example Two-Group Apartment Layouts</h2>
+          <p>
+            These examples show the simple case where the connection graph can be split into two groups.
+            Areas in the same group are not directly connected, so the app can test them in the same round with less risk of triggering adjacent areas.
+          </p>
+          <div class="illustration-grid">
+            <article class="illustration-card">
+              <figure class="grouping-figure">
+                <img src="assets/illustrations/corridor-two-color.svg" alt="Animated corridor apartment example with Entry, Bedroom, Bathroom, and Living Room in Group A, and Hallway and Kitchen in Group B.">
+                <figcaption>Corridor example: the hallway and kitchen are Group B; the rooms connected through them are Group A.</figcaption>
+              </figure>
+              <div class="graph-legend" aria-label="Legend">
+                <span><span class="legend-swatch group-a"></span>Group A = tested in Round 1</span>
+                <span><span class="legend-swatch group-b"></span>Group B = tested in Round 2</span>
+                <span><span class="legend-line"></span>Gray line = connected areas</span>
+              </div>
+              <div class="round-list" aria-label="Test rounds">
+                <span class="round-badge group-a">Round 1: test Group A</span>
+                <span class="round-badge group-b">Round 2: test Group B</span>
+              </div>
+            </article>
+
+            <article class="illustration-card">
+              <figure class="grouping-figure">
+                <img src="assets/illustrations/hub-two-color.svg" alt="Animated hub apartment example with Hallway in Group A and Bedroom, Bathroom, Office, Living Room, and Kitchen in Group B.">
+                <figcaption>Hub example: the central hallway is one group, and all rooms connected to it are the other group.</figcaption>
+              </figure>
+              <div class="graph-legend" aria-label="Legend">
+                <span><span class="legend-swatch group-a"></span>Group A = tested in Round 1</span>
+                <span><span class="legend-swatch group-b"></span>Group B = tested in Round 2</span>
+                <span><span class="legend-line"></span>Gray line = connected areas</span>
+              </div>
+              <div class="round-list" aria-label="Test rounds">
+                <span class="round-badge group-a">Round 1: test Group A</span>
+                <span class="round-badge group-b">Round 2: test Group B</span>
+              </div>
+            </article>
+
+            <article class="illustration-card">
+              <figure class="grouping-figure">
+                <img src="assets/illustrations/lshape-two-color.svg" alt="Animated L-shaped apartment example with Entry, Hallway, and Kitchen in Group A, and Living Room, Bedroom, Bathroom, and Dining Area in Group B.">
+                <figcaption>L-shaped example: connected areas alternate between Group A and Group B.</figcaption>
+              </figure>
+              <div class="graph-legend" aria-label="Legend">
+                <span><span class="legend-swatch group-a"></span>Group A = tested in Round 1</span>
+                <span><span class="legend-swatch group-b"></span>Group B = tested in Round 2</span>
+                <span><span class="legend-line"></span>Gray line = connected areas</span>
+              </div>
+              <div class="round-list" aria-label="Test rounds">
+                <span class="round-badge group-a">Round 1: test Group A</span>
+                <span class="round-badge group-b">Round 2: test Group B</span>
+              </div>
+            </article>
+          </div>
+          <div class="callout note">
+            <h3>Animated illustrations</h3>
+            <p>These examples use two groups because their connection graphs are bipartite. Some real homes may require more than two groups. The app can use more groups when two-coloring is not enough.</p>
+          </div>
         </section>
 
         <section id="start-detection" class="section">
           <h2>Start Detection</h2>
           <p>
-            After room setup is complete, the user taps Start Detection.
+            After area setup, connection setup, and automatic grouping are complete, the user taps Start Detection.
             This single action starts the guided detection session and starts network capture through the connected sniffer.
             The user does not separately operate the sniffer.
-            From this point on, the app controls the timing of room actions and idle periods.
+            From this point on, the app controls the timing of target-area actions, guard/transit periods, and idle periods.
           </p>
           <ol class="steps">
             <li>User opens the app.</li>
             <li>User chooses the method: AR, QR, or NFC.</li>
-            <li>User completes any required room setup.</li>
+            <li>User defines all areas included in the study.</li>
+            <li>User confirms the connection graph.</li>
+            <li>The app shows the target groups generated from graph coloring.</li>
             <li>User taps <strong>Start Detection</strong>.</li>
-            <li>The app starts the session timer, initializes the connected sniffer/network capture, and begins guiding room actions.</li>
+            <li>The app starts the session timer, initializes the connected sniffer/network capture, and begins guiding grouped detection rounds.</li>
           </ol>
         </section>
 
@@ -270,20 +442,20 @@
           <div class="callout participant">
             <h3>Participant instruction</h3>
             <ol>
-              <li>Confirm the room list or map shown by the app.</li>
-              <li>Stand outside the room shown on the screen.</li>
+              <li>Confirm the area list or map shown by the app.</li>
+              <li>Stand outside the target area shown on the screen.</li>
               <li>Wait for the app prompt.</li>
               <li>Tap <strong>Start Action</strong>.</li>
-              <li>Enter the room normally.</li>
+              <li>Enter the target area normally.</li>
               <li>Walk naturally along the instructed path.</li>
-              <li>Exit the room.</li>
+              <li>Exit the target area.</li>
               <li>Tap <strong>Action Finished</strong> after you are outside.</li>
               <li>Wait outside until the app gives the next prompt.</li>
             </ol>
           </div>
           <p>
-            The app records the interval between Start Action and Action Finished as <code>action=1</code> for the target room.
-            All other room action signals remain <code>0</code>.
+            The app records the interval between Start Action and Action Finished as <code>action=1</code> for the target area.
+            Transit is logged separately or assigned to a transit signal, depending on the app prompt.
           </p>
         </section>
 
@@ -291,29 +463,29 @@
           <h2>QR Code Instructions</h2>
           <h3>Setup</h3>
           <ol class="steps">
-            <li>Enter the number of rooms.</li>
-            <li>Place or select one QR code near each room entrance.</li>
+            <li>Enter the number of areas.</li>
+            <li>Place or select one QR code near each area entrance.</li>
             <li>Scan the QR code.</li>
-            <li>Name the room, such as Bedroom, Kitchen, Living Room, Office, or Bathroom.</li>
-            <li>Confirm the room-to-code mapping.</li>
-            <li>Repeat for every room.</li>
-            <li>Review the room table before starting.</li>
+            <li>Name the area, such as Bedroom, Kitchen, Hallway, Entryway, Living Room, Office, or Bathroom.</li>
+            <li>Confirm the area-to-code mapping.</li>
+            <li>Repeat for every area.</li>
+            <li>Review the area table before connection setup.</li>
           </ol>
           <h3>During detection</h3>
           <p>
-            When the app asks the user to test a room, the user scans that room's tag before entering.
-            This marks the start of the action interval for that room.
-            After walking naturally inside the room and exiting, the user scans the same tag again.
+            When the app asks the user to test an area, the user scans that area's tag before entering.
+            This marks the start of the action interval for that area.
+            After walking naturally inside the target area and exiting, the user scans the same tag again.
             This marks the end of the action interval.
-            The app sets that room's action signal to <code>1</code> between the two scans and <code>0</code> otherwise.
-            All other room action signals remain <code>0</code>.
+            The app sets that area's action signal to <code>1</code> between the two scans and <code>0</code> otherwise.
+            Transit should not be silently counted as a target-area action.
           </p>
           <ol class="steps">
-            <li>When the app names a room, stand outside that room.</li>
-            <li>Scan that room's QR code before entering.</li>
-            <li>Enter the room normally.</li>
+            <li>When the app names an area, stand outside that target area.</li>
+            <li>Scan that area's QR code before entering.</li>
+            <li>Enter the target area normally.</li>
             <li>Walk naturally along the instructed path.</li>
-            <li>Exit the room.</li>
+            <li>Exit the target area.</li>
             <li>Scan the same QR code again after exiting.</li>
             <li>Wait for the next prompt.</li>
           </ol>
@@ -323,29 +495,29 @@
           <h2>NFC Tag Instructions</h2>
           <h3>Setup</h3>
           <ol class="steps">
-            <li>Enter the number of rooms.</li>
-            <li>Place or select one NFC tag near each room entrance.</li>
+            <li>Enter the number of areas.</li>
+            <li>Place or select one NFC tag near each area entrance.</li>
             <li>Tap the NFC tag with the phone.</li>
-            <li>Name the room.</li>
-            <li>Confirm the room-to-tag mapping.</li>
-            <li>Repeat for every room.</li>
-            <li>Review the room table before starting.</li>
+            <li>Name the area.</li>
+            <li>Confirm the area-to-tag mapping.</li>
+            <li>Repeat for every area.</li>
+            <li>Review the area table before connection setup.</li>
           </ol>
           <h3>During detection</h3>
           <p>
-            When the app asks the user to test a room, the user taps that room's tag before entering.
-            This marks the start of the action interval for that room.
-            After walking naturally inside the room and exiting, the user taps the same tag again.
+            When the app asks the user to test an area, the user taps that area's tag before entering.
+            This marks the start of the action interval for that area.
+            After walking naturally inside the target area and exiting, the user taps the same tag again.
             This marks the end of the action interval.
-            The app sets that room's action signal to <code>1</code> between the two taps and <code>0</code> otherwise.
-            All other room action signals remain <code>0</code>.
+            The app sets that area's action signal to <code>1</code> between the two taps and <code>0</code> otherwise.
+            Transit should not be silently counted as a target-area action.
           </p>
           <ol class="steps">
-            <li>When the app names a room, stand outside that room.</li>
-            <li>Tap that room's NFC tag before entering.</li>
-            <li>Enter the room normally.</li>
+            <li>When the app names an area, stand outside that target area.</li>
+            <li>Tap that area's NFC tag before entering.</li>
+            <li>Enter the target area normally.</li>
             <li>Walk naturally along the instructed path.</li>
-            <li>Exit the room.</li>
+            <li>Exit the target area.</li>
             <li>Tap the same NFC tag again after exiting.</li>
             <li>Wait for the next prompt.</li>
           </ol>
@@ -354,64 +526,113 @@
         <section id="error-handling" class="section">
           <h2>Error Handling</h2>
           <ul class="check-list">
-            <li>If the user scans or taps the wrong room tag, the app should show an error.</li>
-            <li>If the app asks for Bedroom but the user scans Kitchen, the app should say: <strong>"This tag is registered to Kitchen, but the current room is Bedroom. Please scan the Bedroom tag or press Report Mistake."</strong></li>
+            <li>If the user scans or taps the wrong area tag, the app should show an error.</li>
+            <li>If the app asks for Bedroom but the user scans Kitchen, the app should say: <strong>"This tag is registered to Kitchen, but the current area is Bedroom. Please scan the Bedroom tag or press Report Mistake."</strong></li>
             <li>If the user forgets a scan or tap, they should press <strong>Report Mistake</strong>.</li>
-            <li>If an action is currently active for one room, the app should not allow another room action to start.</li>
+            <li>If an action is currently active for one area, the app should not allow another area action to start.</li>
             <li>The app should restart the affected step after a mistake.</li>
-            <li>Mistakes include wrong room, wrong scan or tap, forgotten scan or tap, failed QR scan, failed NFC tap, AR tracking failure, entering too early, or exiting late.</li>
+            <li>Mistakes include wrong area, wrong route, wrong scan or tap, forgotten scan or tap, failed QR scan, failed NFC tap, AR tracking failure, entering too early, or exiting late.</li>
           </ul>
         </section>
 
         <section id="scheduling" class="section">
           <h2>Multi-Room Scheduling</h2>
+          <p>
+            Detection is organized by the groups created from graph coloring.
+            For each group, the current group becomes the target group, the app guides actions only for target areas in that group, adjacent or pass-through areas are treated as guard/transit areas, and other areas remain idle non-target areas.
+            Every area should become a target area in one round.
+          </p>
+          <ol class="steps">
+            <li>If there are two groups, Round 1 tests Group A and Round 2 tests Group B.</li>
+            <li>If there are <strong>k</strong> groups, the app runs <strong>k</strong> rounds.</li>
+            <li>Within a round, the app records one action signal per target area.</li>
+            <li>If the user passes through another area, the app records a transit signal or excludes that transit period from the target-area action window.</li>
+            <li>The app keeps guard/transit areas separate from clean idle non-target evidence.</li>
+          </ol>
+          <div class="callout note">
+            <h3>Area state machine</h3>
+            <p><code>Area state &isin; {SETUP, TARGET_READY, ACTION_ACTIVE, GUARD_TRANSIT, IDLE_NON_TARGET, CLASSIFIED, NEEDS_DISAMBIGUATION}</code></p>
+          </div>
+        </section>
+
+        <section id="guard-transit" class="section">
+          <h2>Guard and Transit Areas</h2>
+          <p>
+            A <strong>target area</strong> is an area being intentionally tested in the current round.
+            A <strong>guard/transit area</strong> is an adjacent, visible, or pass-through area that may be triggered during the current round.
+            An <strong>idle non-target area</strong> is not currently being tested and is not expected to be affected by the user's movement in the current round.
+          </p>
+          <div class="callout important">
+            <h3>Important</h3>
+            <p>Guard/transit areas should not be treated as clean negative evidence. They may show activity because the user passed nearby, crossed a doorway, or moved through a connected area.</p>
+          </div>
+          <ul class="check-list">
+            <li>The app guides actions only for target areas in the current group.</li>
+            <li>The user should not enter other areas unless the app route requires it.</li>
+            <li>If the route requires transit through another area, the app prompt should make that clear.</li>
+            <li>The app records the transit or excludes it from the target-area action window.</li>
+          </ul>
+        </section>
+
+        <section id="disambiguation" class="section">
+          <h2>Disambiguation</h2>
+          <p>
+            If a device appears correlated with multiple connected areas, the app marks it as ambiguous and runs a short extra test.
+            One possible extra test is a transit-only control: the user walks to the doorway or along the route, but does not enter or walk inside the target area.
+          </p>
           <div class="two-column">
             <article class="card">
-              <h3>Sequential mode</h3>
-              <ul>
-                <li>The app tests one room at a time.</li>
-                <li>The app keeps the room idle for the reset or cooldown period.</li>
-                <li>The app guides room actions separated by idle intervals.</li>
-                <li>The app moves to the next room after the scheduled actions.</li>
-                <li>This is slower but easier to follow.</li>
-              </ul>
+              <h3>Transit-only response</h3>
+              <p>If a device responds to both transit-only and full-area actions, the app labels it as a hallway, doorway, pass-through, or shared-view candidate.</p>
             </article>
             <article class="card">
-              <h3>Interleaved mode</h3>
-              <ul>
-                <li>The app may use idle time for one room to test another room.</li>
-                <li>The app should never schedule overlapping actions.</li>
-                <li>The user should not enter a room during its required idle period.</li>
-                <li>The app should keep a short separation between actions in different rooms.</li>
-                <li>The app should avoid identical periodic schedules across rooms.</li>
-                <li>This is faster but requires careful app timing.</li>
-              </ul>
+              <h3>Full-area-only response</h3>
+              <p>If a device responds only to the full target-area action, the app labels it as a target-area candidate.</p>
             </article>
           </div>
-          <div class="callout note">
-            <h3>Room state machine</h3>
-            <p><code>Room state &isin; {SETUP, RESETTING, READY_FOR_ACTION, ACTION_ACTIVE, WAITING_IDLE, CLASSIFIED, NEEDS_DISAMBIGUATION}</code></p>
+          <div class="table-wrap">
+            <table>
+              <caption>Possible ambiguity labels</caption>
+              <thead>
+                <tr>
+                  <th>Label</th>
+                  <th>Plain-language meaning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th>Area-specific candidate</th><td>The signal is most aligned with intentional action in one target area.</td></tr>
+                <tr><th>Shared-view candidate</th><td>The signal may be explained by visibility across connected areas.</td></tr>
+                <tr><th>Hallway/transit candidate</th><td>The signal may be explained by movement through a doorway, hallway, entryway, or route.</td></tr>
+                <tr><th>Unresolved candidate</th><td>The extra test did not clearly separate the possible explanations.</td></tr>
+              </tbody>
+            </table>
           </div>
         </section>
 
         <section id="signal-format" class="section">
           <h2>Action Signal Format</h2>
           <p>
-            For a home with <strong>N</strong> rooms, the app records <strong>N</strong> binary action signals:
+            The app still records one binary action signal per area.
+            For a home with <strong>N</strong> areas, the app records <strong>N</strong> binary action signals:
           </p>
           <pre class="formula"><code>A(t) = [a_1(t), a_2(t), ..., a_N(t)]</code></pre>
-          <p>For each room <strong>R_i</strong>:</p>
+          <p>For each area <strong>i</strong>:</p>
           <ul>
-            <li><code>a_i(t) = 1</code> only while the user is performing the instructed enter-walk-exit action in room <strong>R_i</strong>.</li>
+            <li><code>a_i(t) = 1</code> only during intentional action in area <strong>i</strong>.</li>
             <li><code>a_i(t) = 0</code> otherwise.</li>
           </ul>
           <p>
-            During normal operation, only one room should have signal <code>1</code> at a time.
-            During idle periods, all room signals are <code>0</code>.
+            During normal operation, only one area action should be active at a time.
+            During idle periods, all area signals are <code>0</code>.
+            During transit, the app uses one of two explicit options:
           </p>
+          <ul>
+            <li><strong>Option A:</strong> all area action signals remain <code>0</code> and a separate transit event is logged.</li>
+            <li><strong>Option B:</strong> a transit signal for the pass-through area is recorded.</li>
+          </ul>
           <div class="callout important">
             <h3>Important</h3>
-            <p>Only one room action should be active at a time. During waiting periods, all room signals stay <code>0</code>.</p>
+            <p>Transit should not be silently counted as a target-area action.</p>
           </div>
           <div class="table-wrap">
             <table>
@@ -421,16 +642,18 @@
                   <th>Time</th>
                   <th>Bedroom</th>
                   <th>Kitchen</th>
-                  <th>Living Room</th>
+                  <th>Hallway</th>
                   <th>Office</th>
+                  <th>Transit event</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>00:00</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                <tr><td>00:10</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
-                <tr><td>00:24</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-                <tr><td>01:00</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
-                <tr><td>01:16</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                <tr><td>00:00</td><td>0</td><td>0</td><td>0</td><td>0</td><td>None</td></tr>
+                <tr><td>00:10</td><td>1</td><td>0</td><td>0</td><td>0</td><td>None</td></tr>
+                <tr><td>00:24</td><td>0</td><td>0</td><td>0</td><td>0</td><td>None</td></tr>
+                <tr><td>00:40</td><td>0</td><td>0</td><td>0</td><td>0</td><td>Hallway transit</td></tr>
+                <tr><td>01:00</td><td>0</td><td>1</td><td>0</td><td>0</td><td>None</td></tr>
+                <tr><td>01:16</td><td>0</td><td>0</td><td>0</td><td>0</td><td>None</td></tr>
               </tbody>
             </table>
           </div>
@@ -488,7 +711,7 @@
             </a>
             <a class="doc-link" href="user-flow-checklist.html">
               <strong>User Flow Checklist</strong>
-              <span>Setup, Start Detection, room action, mistake, and finish-session checks.</span>
+              <span>Setup, Start Detection, grouped area action, mistake, and finish-session checks.</span>
             </a>
             <a class="doc-link" href="app-recording-spec.html">
               <strong>App Recording Spec</strong>
@@ -496,7 +719,7 @@
             </a>
             <a class="doc-link" href="action-signal-spec.html">
               <strong>Action Signal Format</strong>
-              <span>Binary room signals, examples, and validation rules.</span>
+              <span>Binary area signals, transit handling, examples, and validation rules.</span>
             </a>
           </div>
         </section>

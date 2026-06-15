@@ -28,7 +28,7 @@
     <div class="article-hero">
       <p class="eyebrow">What happens automatically</p>
       <h1>App Recording Spec</h1>
-      <p class="lead">This page explains what the app records during the guided session and what information is not needed for the public protocol.</p>
+      <p class="lead">This page explains what the app records during area setup, connection setup, grouped detection rounds, and the guided session.</p>
       <div class="hero-actions">
         <a class="button" href="participant-instructions.html">Participant Instructions</a>
         <a class="button secondary" href="index.html">Back Home</a>
@@ -39,7 +39,7 @@
       <section class="section">
         <h2>Start Trigger</h2>
         <p>
-          After room setup is complete, the user taps <strong>Start Detection</strong>.
+          After area setup, connection setup, and app-generated group review are complete, the user taps <strong>Start Detection</strong>.
           This starts both the guided session and network capture through the connected sniffer.
           The user does not separately start or operate the sniffer.
         </p>
@@ -62,20 +62,28 @@
                 <td>Random participant ID, random session ID, selected method, app version, session start and end time.</td>
               </tr>
               <tr>
-                <th>Room setup mappings</th>
-                <td>Room number, room name, QR/NFC tag ID when applicable, confirmation status.</td>
+                <th>Area setup mappings</th>
+                <td>Area number, area name, QR/NFC tag ID when applicable, confirmation status.</td>
+              </tr>
+              <tr>
+                <th>Connection setup</th>
+                <td>Areas, direct connections, visibility links, doorway/open-boundary links, pass-through routes, confirmed connection graph.</td>
+              </tr>
+              <tr>
+                <th>Automatic grouping</th>
+                <td>Conflict graph inputs, app-generated groups, round order, target group for each round, guard/transit areas, idle non-target areas.</td>
               </tr>
               <tr>
                 <th>Action events</th>
-                <td>Room ID, action start time, action end time, action duration, idle duration, retry count.</td>
+                <td>Area ID, action start time, action end time, action duration, idle duration, transit event when used, retry count.</td>
               </tr>
               <tr>
                 <th>QR/NFC events</th>
-                <td>Tag ID, scan/tap timestamp, expected room, scanned/tapped room, success or failure.</td>
+                <td>Tag ID, scan/tap timestamp, expected area, scanned/tapped area, success or failure.</td>
               </tr>
               <tr>
                 <th>AR/button events</th>
-                <td>Start Action timestamp, Action Finished timestamp, AR tracking state, tracking failure events.</td>
+                <td>Start Action timestamp, Action Finished timestamp, AR tracking state, area entry/exit estimate when available, tracking failure events.</td>
               </tr>
               <tr>
                 <th>Wi-Fi metadata</th>
@@ -83,7 +91,11 @@
               </tr>
               <tr>
                 <th>Mistake reports</th>
-                <td>Report Mistake timestamp, affected room or step, retry count, and the app's restart state.</td>
+                <td>Report Mistake timestamp, affected area, route, or step, retry count, and the app's restart state.</td>
+              </tr>
+              <tr>
+                <th>Disambiguation outcomes</th>
+                <td>Ambiguous device marker, extra-test type, and labels such as area-specific, shared-view, hallway/transit, or unresolved candidate.</td>
               </tr>
             </tbody>
           </table>
@@ -105,7 +117,12 @@
       <section class="section">
         <h2>App Responsibilities</h2>
         <ul class="check-list">
-          <li>Maintain one active room action at a time.</li>
+          <li>Maintain one active target-area action at a time.</li>
+          <li>Build a conflict graph from direct connections, visibility, doorway conflicts, and pass-through relationships.</li>
+          <li>Use graph coloring to split areas into two or more non-conflicting groups.</li>
+          <li>Run one detection round per group and make every area a target area in one round.</li>
+          <li>Treat adjacent, visible, and pass-through areas as guard/transit areas instead of clean non-target evidence.</li>
+          <li>Log transit separately or record a transit signal for the pass-through area.</li>
           <li>Reject mismatched tags.</li>
           <li>Restart affected steps after Report Mistake.</li>
           <li>Stop capture when the session ends.</li>

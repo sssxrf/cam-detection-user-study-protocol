@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 460" role="img" aria-labelledby="title desc">
+  <title id="title">Central hallway hub apartment two-color grouping</title>
+  <desc id="desc">A hub apartment where Hallway is Group A and Bedroom, Bathroom, Office, Living Room, and Kitchen are Group B.</desc>
+  <style>
+    :root { color-scheme: light; }
+    text { font-family: Arial, Helvetica, sans-serif; fill: #24313d; }
+    .wall { fill: #fff; stroke: #aab5bf; stroke-width: 5; rx: 18; }
+    .area-a { fill: #d9f3f0; stroke: #1b8a87; }
+    .area-b { fill: #ffe4b8; stroke: #c77713; }
+    .node-a { fill: #d9f3f0; stroke: #1b8a87; }
+    .node-b { fill: #ffe4b8; stroke: #c77713; }
+    .connection { stroke: #9099a3; stroke-width: 6; stroke-linecap: round; fill: none; }
+    .label { font-size: 18px; font-weight: 700; }
+    .group-mark { font-size: 22px; font-weight: 800; fill: #172533; }
+    .small { font-size: 15px; fill: #5d6b7a; }
+    .draw-in { stroke-dasharray: 620; stroke-dashoffset: 620; animation: draw 1s ease forwards; }
+    .edge-delay { animation-delay: .8s; }
+    .paint-a { animation: paintA .7s ease 1.7s both; }
+    .paint-b { animation: paintB .7s ease 2.45s both; }
+    .round-a { animation: pulseA 1s ease 3.2s 2; }
+    .round-b { animation: pulseB 1s ease 4.4s 2; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    @keyframes paintA { from { fill: #fff; } to { fill: #d9f3f0; } }
+    @keyframes paintB { from { fill: #fff; } to { fill: #ffe4b8; } }
+    @keyframes pulseA { 50% { stroke-width: 9; filter: drop-shadow(0 0 5px #1b8a87); } }
+    @keyframes pulseB { 50% { stroke-width: 9; filter: drop-shadow(0 0 5px #c77713); } }
+    @media (prefers-reduced-motion: reduce) {
+      .draw-in, .paint-a, .paint-b, .round-a, .round-b { animation: none; stroke-dashoffset: 0; }
+    }
+  </style>
+
+  <rect width="920" height="460" fill="#f8fafc"/>
+  <text x="34" y="42" class="label">Floor plan</text>
+  <text x="522" y="42" class="label">Connection graph</text>
+
+  <g aria-label="Simplified central hallway floor plan">
+    <rect x="190" y="176" width="116" height="108" class="wall area-a paint-a round-a"/>
+    <text x="214" y="222" class="label">Hallway</text>
+    <text x="239" y="254" class="group-mark">A</text>
+
+    <rect x="44" y="68" width="132" height="94" class="wall area-b paint-b round-b"/>
+    <text x="70" y="108" class="label">Bedroom</text>
+    <text x="101" y="139" class="group-mark">B</text>
+
+    <rect x="320" y="68" width="132" height="94" class="wall area-b paint-b round-b"/>
+    <text x="339" y="108" class="label">Bathroom</text>
+    <text x="377" y="139" class="group-mark">B</text>
+
+    <rect x="44" y="304" width="132" height="94" class="wall area-b paint-b round-b"/>
+    <text x="84" y="344" class="label">Office</text>
+    <text x="101" y="375" class="group-mark">B</text>
+
+    <rect x="320" y="304" width="132" height="94" class="wall area-b paint-b round-b"/>
+    <text x="359" y="344" class="label">Kitchen</text>
+    <text x="377" y="375" class="group-mark">B</text>
+
+    <rect x="320" y="188" width="132" height="82" class="wall area-b paint-b round-b"/>
+    <text x="357" y="222" class="label">Living</text>
+    <text x="377" y="251" class="group-mark">B</text>
+
+    <line x1="176" y1="162" x2="205" y2="176" class="connection draw-in"/>
+    <line x1="320" y1="162" x2="291" y2="176" class="connection draw-in"/>
+    <line x1="306" y1="229" x2="320" y2="229" class="connection draw-in"/>
+    <line x1="176" y1="304" x2="205" y2="284" class="connection draw-in"/>
+    <line x1="320" y1="304" x2="291" y2="284" class="connection draw-in"/>
+  </g>
+
+  <g aria-label="Central hallway connection graph">
+    <line x1="682" y1="230" x2="586" y2="92" class="connection draw-in edge-delay"/>
+    <line x1="682" y1="230" x2="800" y2="94" class="connection draw-in edge-delay"/>
+    <line x1="682" y1="230" x2="838" y2="230" class="connection draw-in edge-delay"/>
+    <line x1="682" y1="230" x2="800" y2="366" class="connection draw-in edge-delay"/>
+    <line x1="682" y1="230" x2="586" y2="366" class="connection draw-in edge-delay"/>
+
+    <circle cx="682" cy="230" r="50" class="node-a paint-a round-a"/>
+    <text x="654" y="224" class="small">Hallway</text>
+    <text x="674" y="252" class="group-mark">A</text>
+
+    <circle cx="586" cy="92" r="44" class="node-b paint-b round-b"/>
+    <text x="557" y="88" class="small">Bedroom</text>
+    <text x="578" y="114" class="group-mark">B</text>
+
+    <circle cx="800" cy="94" r="44" class="node-b paint-b round-b"/>
+    <text x="769" y="90" class="small">Bathroom</text>
+    <text x="792" y="116" class="group-mark">B</text>
+
+    <circle cx="838" cy="230" r="44" class="node-b paint-b round-b"/>
+    <text x="817" y="226" class="small">Living</text>
+    <text x="830" y="252" class="group-mark">B</text>
+
+    <circle cx="800" cy="366" r="44" class="node-b paint-b round-b"/>
+    <text x="772" y="362" class="small">Kitchen</text>
+    <text x="792" y="388" class="group-mark">B</text>
+
+    <circle cx="586" cy="366" r="44" class="node-b paint-b round-b"/>
+    <text x="566" y="362" class="small">Office</text>
+    <text x="578" y="388" class="group-mark">B</text>
+  </g>
+</svg>

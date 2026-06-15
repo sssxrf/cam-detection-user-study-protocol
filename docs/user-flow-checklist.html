@@ -28,7 +28,7 @@
     <div class="article-hero">
       <p class="eyebrow">Participant checklist</p>
       <h1>User Flow Checklist</h1>
-      <p class="lead">Use this checklist to follow the app workflow from setup to the end of the session.</p>
+      <p class="lead">Use this checklist to follow the app workflow from area setup to grouped detection rounds and the end of the session.</p>
       <div class="hero-actions">
         <a class="button" href="participant-instructions.html">Read Instructions</a>
         <a class="button secondary" href="index.html">Back Home</a>
@@ -47,45 +47,70 @@
       </section>
 
       <section class="section">
-        <h2>Room Setup</h2>
+        <h2>Area Setup</h2>
         <div class="three-column">
           <div class="card">
             <h3>AR + Button</h3>
             <ul class="task-list">
-              <li>Confirm the room map or room list shown by the app.</li>
+              <li>Confirm the room/area map or area list shown by the app.</li>
               <li>Confirm the starting location if the app asks.</li>
-              <li>Continue to Start Detection.</li>
+              <li>Continue to connection setup.</li>
             </ul>
           </div>
           <div class="card">
             <h3>QR Code</h3>
             <ul class="task-list">
-              <li>Enter the number of rooms.</li>
-              <li>Place or select one QR code near each room entrance.</li>
+              <li>Enter the number of areas.</li>
+              <li>Place or select one QR code near each area entrance.</li>
               <li>Scan each QR code.</li>
-              <li>Name each room.</li>
-              <li>Confirm each room-to-code mapping.</li>
-              <li>Review the final room table.</li>
+              <li>Name each area.</li>
+              <li>Confirm each area-to-code mapping.</li>
+              <li>Review the final area table.</li>
             </ul>
           </div>
           <div class="card">
             <h3>NFC Tag</h3>
             <ul class="task-list">
-              <li>Enter the number of rooms.</li>
-              <li>Place or select one NFC tag near each room entrance.</li>
+              <li>Enter the number of areas.</li>
+              <li>Place or select one NFC tag near each area entrance.</li>
               <li>Tap each NFC tag.</li>
-              <li>Name each room.</li>
-              <li>Confirm each room-to-tag mapping.</li>
-              <li>Review the final room table.</li>
+              <li>Name each area.</li>
+              <li>Confirm each area-to-tag mapping.</li>
+              <li>Review the final area table.</li>
             </ul>
           </div>
         </div>
+        <ul class="task-list">
+          <li>I named all rooms/areas.</li>
+          <li>I included hallways and connected spaces if I may pass through them.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Connection Setup</h2>
+        <ul class="task-list">
+          <li>I marked which areas are connected.</li>
+          <li>I marked areas that share doors, open boundaries, or hallways.</li>
+          <li>I marked pass-through areas.</li>
+          <li>I marked areas that must be passed through to reach another area.</li>
+          <li>I confirmed the connection graph.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Grouped Detection Rounds</h2>
+        <ul class="task-list">
+          <li>I reviewed the app-generated target groups.</li>
+          <li>I understand that the app may use two groups or three or more groups.</li>
+          <li>I understand that I will test one group at a time.</li>
+          <li>I understand that guard/transit areas are not judged as clean non-target areas in that round.</li>
+        </ul>
       </section>
 
       <section class="section">
         <h2>Start Detection</h2>
         <ul class="task-list">
-          <li>Tap Start Detection only after room setup is complete.</li>
+          <li>Tap Start Detection only after area setup, connection setup, and group review are complete.</li>
           <li>Confirm that the app starts the guided session.</li>
           <li>Confirm that the app starts network capture through the connected sniffer.</li>
           <li>Do not operate the sniffer separately.</li>
@@ -93,15 +118,16 @@
       </section>
 
       <section class="section">
-        <h2>For Each Room Action</h2>
+        <h2>For Each Target-Area Action</h2>
         <ul class="task-list">
-          <li>Read the room name shown by the app.</li>
-          <li>Stand outside the target room.</li>
-          <li>Mark the start of the action: AR: tap Start Action. QR: scan the room QR code. NFC: tap the room NFC tag.</li>
-          <li>Enter the room normally.</li>
+          <li>Read the area name shown by the app.</li>
+          <li>Stand outside the target area.</li>
+          <li>Mark the start of the action: AR: tap Start Action. QR: scan the area QR code. NFC: tap the area NFC tag.</li>
+          <li>Enter the target area normally.</li>
           <li>Walk naturally along the instructed path.</li>
-          <li>Exit the room.</li>
+          <li>Exit the target area.</li>
           <li>Mark the end of the action: AR: tap Action Finished. QR: scan the same QR code again. NFC: tap the same NFC tag again.</li>
+          <li>If the route requires passing through another area, follow the app prompt and do not count that as a target-area action unless the app asks.</li>
           <li>Wait for the next app prompt.</li>
         </ul>
       </section>
@@ -109,9 +135,10 @@
       <section class="section">
         <h2>Mistake Checklist</h2>
         <ul class="task-list">
-          <li>If I used the wrong room, tap Report Mistake.</li>
+          <li>If I used the wrong area, tap Report Mistake.</li>
           <li>If I used the wrong tag, tap Report Mistake.</li>
           <li>If I forgot a scan, tap, or button press, tap Report Mistake.</li>
+          <li>If I followed the wrong route or entered an extra area, tap Report Mistake.</li>
           <li>If QR/NFC/AR fails, tap Report Mistake.</li>
           <li>Wait for the app to restart the affected step.</li>
         </ul>

@@ -29,7 +29,7 @@
       <p class="eyebrow">Participant guide</p>
       <h1>Participant Instructions</h1>
       <p class="lead">
-        You will use the study app to check multiple rooms. The app will tell you what to do and when to move.
+        You will use the study app to check multiple rooms and connected areas. The app will tell you what to do and when to move.
         Follow the prompts exactly. Move naturally. If anything goes wrong, tap Report Mistake. You may stop at any time.
       </p>
       <div class="hero-actions">
@@ -40,21 +40,61 @@
 
     <article class="article-content">
       <section class="section">
+        <h2>Quick Idea: The App Tests Non-Connected Areas Together</h2>
+        <p>
+          The app groups connected areas using graph coloring.
+          In a simple two-group case, Group A is tested in Round 1 and Group B is tested in Round 2.
+        </p>
+        <figure class="grouping-figure compact-figure">
+          <img src="assets/illustrations/user-quick-two-rounds.svg" alt="Three-panel animated explanation showing area setup, Group A and Group B coloring, and two detection rounds.">
+          <figcaption>The app groups areas so connected areas are not tested at the same time. In the simple two-group case, Group A is tested first and Group B is tested second.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section">
         <h2>Before You Start</h2>
         <ul class="check-list">
           <li>Make sure the phone is charged.</li>
           <li>Make sure the connected sniffer is attached if the app requires it.</li>
           <li>Open the study app.</li>
           <li>Choose the method assigned for this session: AR + Button, QR Code, or NFC Tag.</li>
-          <li>Complete any room setup shown by the app.</li>
-          <li>Do not enter rooms before the app asks you to.</li>
+          <li>Complete any area setup shown by the app.</li>
+          <li>Include hallways, entryways, connected spaces, and other areas you may pass through.</li>
+          <li>Do not enter areas before the app asks you to.</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Connection Setup</h2>
+        <ul class="check-list">
+          <li>After naming areas, the app asks which areas are connected.</li>
+          <li>Mark areas that share doors, open boundaries, or hallways.</li>
+          <li>Mark areas that are visible from each other.</li>
+          <li>Mark areas that must be passed through to reach another area.</li>
+          <li>Confirm the connection graph shown by the app.</li>
+        </ul>
+        <div class="callout important">
+          <h3>Important</h3>
+          <p>Passing through an area can trigger devices there. Follow the route prompt and do not treat transit as a separate area action unless the app asks.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Grouped Detection Rounds</h2>
+        <ul class="check-list">
+          <li>The app may group areas automatically.</li>
+          <li>You will test one group at a time.</li>
+          <li>Only enter the area the app names.</li>
+          <li>Do not enter other areas unless the app route requires it.</li>
+          <li>If you must pass through another area, follow the app prompt and do not treat that as a separate area action unless the app asks.</li>
+          <li>Areas near your route may be guard/transit areas. They are not judged as clean non-target areas in that round.</li>
         </ul>
       </section>
 
       <section class="section">
         <h2>Start Detection</h2>
         <ul class="check-list">
-          <li>After setup, tap <strong>Start Detection</strong>.</li>
+          <li>After area and connection setup, tap <strong>Start Detection</strong>.</li>
           <li>This starts the guided session.</li>
           <li>This also starts network capture through the connected sniffer.</li>
           <li>You do not need to start the sniffer separately.</li>
@@ -65,19 +105,19 @@
       <section class="section">
         <h2>AR + Button Method</h2>
         <ol class="steps">
-          <li>Confirm the room list or map shown by the app.</li>
-          <li>Stand outside the room shown on the screen.</li>
+          <li>Confirm the area list or map shown by the app.</li>
+          <li>Stand outside the target area shown on the screen.</li>
           <li>Wait for the app prompt.</li>
           <li>Tap <strong>Start Action</strong>.</li>
-          <li>Enter the room normally.</li>
+          <li>Enter the target area normally.</li>
           <li>Walk naturally along the instructed path.</li>
-          <li>Exit the room.</li>
+          <li>Exit the target area.</li>
           <li>Tap <strong>Action Finished</strong> after you are outside.</li>
           <li>Wait outside until the app gives the next prompt.</li>
         </ol>
         <div class="callout participant">
           <h3>What the app records</h3>
-          <p>The app records the time between Start Action and Action Finished as the action period for that room.</p>
+          <p>The app records the time between Start Action and Action Finished as the action period for that target area.</p>
         </div>
       </section>
 
@@ -87,23 +127,23 @@
           <div>
             <h3>Setup</h3>
             <ol class="steps">
-              <li>Enter the number of rooms.</li>
-              <li>Place or select one QR code near each room entrance.</li>
+              <li>Enter the number of areas.</li>
+              <li>Place or select one QR code near each area entrance.</li>
               <li>Scan the QR code.</li>
-              <li>Name the room, such as Bedroom, Kitchen, Living Room, Office, or Bathroom.</li>
-              <li>Confirm the room-to-code mapping.</li>
-              <li>Repeat for every room.</li>
-              <li>Review the room table before starting.</li>
+              <li>Name the area, such as Bedroom, Kitchen, Hallway, Entryway, Living Room, Office, or Bathroom.</li>
+              <li>Confirm the area-to-code mapping.</li>
+              <li>Repeat for every area.</li>
+              <li>Review the area table before connection setup.</li>
             </ol>
           </div>
           <div>
             <h3>Detection</h3>
             <ol class="steps">
-              <li>When the app names a room, stand outside that room.</li>
-              <li>Scan that room's QR code before entering.</li>
-              <li>Enter the room normally.</li>
+              <li>When the app names an area, stand outside that target area.</li>
+              <li>Scan that area's QR code before entering.</li>
+              <li>Enter the target area normally.</li>
               <li>Walk naturally along the instructed path.</li>
-              <li>Exit the room.</li>
+              <li>Exit the target area.</li>
               <li>Scan the same QR code again after exiting.</li>
               <li>Wait for the next prompt.</li>
             </ol>
@@ -111,7 +151,7 @@
         </div>
         <div class="callout important">
           <h3>Action signal</h3>
-          <p>The app marks that room's action signal as <code>1</code> between the two scans. All other room signals stay <code>0</code>.</p>
+          <p>The app marks that area's action signal as <code>1</code> between the two scans. Transit is logged separately or handled as a transit signal when the app prompts it.</p>
         </div>
       </section>
 
@@ -121,23 +161,23 @@
           <div>
             <h3>Setup</h3>
             <ol class="steps">
-              <li>Enter the number of rooms.</li>
-              <li>Place or select one NFC tag near each room entrance.</li>
+              <li>Enter the number of areas.</li>
+              <li>Place or select one NFC tag near each area entrance.</li>
               <li>Tap the NFC tag with the phone.</li>
-              <li>Name the room.</li>
-              <li>Confirm the room-to-tag mapping.</li>
-              <li>Repeat for every room.</li>
-              <li>Review the room table before starting.</li>
+              <li>Name the area.</li>
+              <li>Confirm the area-to-tag mapping.</li>
+              <li>Repeat for every area.</li>
+              <li>Review the area table before connection setup.</li>
             </ol>
           </div>
           <div>
             <h3>Detection</h3>
             <ol class="steps">
-              <li>When the app names a room, stand outside that room.</li>
-              <li>Tap that room's NFC tag before entering.</li>
-              <li>Enter the room normally.</li>
+              <li>When the app names an area, stand outside that target area.</li>
+              <li>Tap that area's NFC tag before entering.</li>
+              <li>Enter the target area normally.</li>
               <li>Walk naturally along the instructed path.</li>
-              <li>Exit the room.</li>
+              <li>Exit the target area.</li>
               <li>Tap the same NFC tag again after exiting.</li>
               <li>Wait for the next prompt.</li>
             </ol>
@@ -145,15 +185,15 @@
         </div>
         <div class="callout important">
           <h3>Action signal</h3>
-          <p>The app marks that room's action signal as <code>1</code> between the two taps. All other room signals stay <code>0</code>.</p>
+          <p>The app marks that area's action signal as <code>1</code> between the two taps. Transit is logged separately or handled as a transit signal when the app prompts it.</p>
         </div>
       </section>
 
       <section class="section">
         <h2>During Waiting Periods</h2>
         <ul class="check-list">
-          <li>Stay outside the room unless the app asks you to enter.</li>
-          <li>Do not perform extra room actions during idle periods.</li>
+          <li>Stay outside the target area unless the app asks you to enter.</li>
+          <li>Do not perform extra area actions during idle periods.</li>
           <li>Keep the phone with you.</li>
           <li>Wait until the app gives the next instruction.</li>
         </ul>
@@ -164,7 +204,7 @@
           <h2>If Something Goes Wrong</h2>
           <p>Tap <strong>Report Mistake</strong> if:</p>
           <ul>
-            <li>You enter the wrong room.</li>
+            <li>You enter the wrong area.</li>
             <li>You scan or tap the wrong tag.</li>
             <li>You forget to scan or tap before entering.</li>
             <li>You forget to scan or tap after exiting.</li>
@@ -172,6 +212,7 @@
             <li>The NFC tap fails.</li>
             <li>The app loses AR tracking.</li>
             <li>You move before the prompt.</li>
+            <li>You use a different route than the app asked for.</li>
             <li>You are not sure what happened.</li>
           </ul>
           <p>After you tap Report Mistake, the app will restart the affected step.</p>
